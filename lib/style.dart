@@ -7,6 +7,7 @@ const BodyTextSize = 16.0;
 const String FontNameDefault = 'Roboto';
 
 const ThemeColor = const Color(0xfff08580);
+const ThemeLightColor = const Color(0xfffbbebb);
 const SearchBarColor = const Color(0xffeeedf0);
 
 const Body1Style = TextStyle(

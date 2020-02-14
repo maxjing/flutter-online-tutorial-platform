@@ -5,6 +5,7 @@ class CategoryButton extends StatelessWidget {
   final String _text;
 
   CategoryButton(this._assetPath, this._text);
+
   @override
   Widget build(BuildContext context) {
     return Container(

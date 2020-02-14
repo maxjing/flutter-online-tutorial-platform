@@ -3,6 +3,8 @@ import '../../helper.dart';
 import '../../style.dart';
 import 'categoryButton.dart';
 import 'recommendBanner.dart';
+import 'teacherBanner.dart';
+import '../bottomNavigation/bottomNavigation.dart';
 
 class Home extends StatelessWidget {
   Widget titleSection = Container(
@@ -65,7 +67,6 @@ class Home extends StatelessWidget {
         hintText: "what area are you looking for",
         prefixIcon: const Icon(
           Icons.search,
-          color: Colors.grey,
         ),
         labelStyle: new TextStyle(color: Colors.black),
         // ),
@@ -138,43 +139,74 @@ class Home extends StatelessWidget {
         )
       ]));
 
-  Widget _bottomNormal() => BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            backgroundColor: Colors.red,
-            icon: Icon(
-              Icons.home,
-              size: 30,
-            ),
-            title: Text(
-              "Home",
-              style: TextStyle(fontSize: 30),
-            ),
+  Widget teacherSection = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(
+            'Explore by Teacher',
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16.0,
+                color: Colors.black),
           ),
-          BottomNavigationBarItem(
-            backgroundColor: Colors.red,
-            icon: Icon(
-              Icons.assignment_ind,
-              size: 30,
+          Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Container(
+              padding: const EdgeInsets.only(right: 5),
+              child: Text(
+                'Filter by:',
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12.0,
+                    color: Colors.grey),
+              ),
             ),
-            title: Text(
-              "User",
-              style: TextStyle(fontSize: 30),
-            ),
-          )
-        ],
-      );
+            Container(
+                decoration: BoxDecoration(
+                  color: ThemeLightColor,
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(3.0),
+                  child: Text(
+                    'student review',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12.0,
+                        color: Colors.white),
+                  ),
+                ))
+          ]),
+        ]),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          height: getScreenHeight(),
+          child: ListView(
+            scrollDirection: Axis.vertical,
+            children: [
+              TeacherBanner('assets/images/teacher_1.png', 'Jackie', 'Chan',
+                  '23', "asdkjadjaksdjashkda"),
+              Divider(
+                color: Colors.grey,
+              ),
+              TeacherBanner('assets/images/teacher_2.png', 'Jackie', 'Chan',
+                  '23', "aksdjlkajdkajldjasl")
+            ],
+          ),
+        )
+      ]));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(children: [
-        titleSection,
-        searchBar,
-        header,
-        categorySection,
-        recommendSection,
-        // _bottomNormal()
-      ]),
-    );
+        body: ListView(children: [
+          titleSection,
+          searchBar,
+          header,
+          categorySection,
+          recommendSection,
+          teacherSection,
+        ]),
+        bottomNavigationBar: BottomNavigation(0));
   }
 }
