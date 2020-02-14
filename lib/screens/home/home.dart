@@ -77,7 +77,10 @@ class Home extends StatelessWidget {
         fillColor: SearchBarColor,
         border: InputBorder.none,
         hintText: "Enter Your Name",
-        prefixIcon: Icon(Icons.search),
+        prefixIcon: const Icon(
+          Icons.search,
+          color: ThemeColor,
+        ),
         labelStyle: new TextStyle(color: Colors.black),
         // ),
       ),
