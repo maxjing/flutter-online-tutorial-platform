@@ -3,8 +3,8 @@ import '../../helper.dart';
 import '../../style.dart';
 import 'categoryButton.dart';
 import 'recommendBanner.dart';
-import 'teacherBanner.dart';
 import '../bottomNavigation/bottomNavigation.dart';
+import 'teacherSection.dart';
 
 class Home extends StatelessWidget {
   Widget titleSection = Container(
@@ -37,7 +37,6 @@ class Home extends StatelessWidget {
                 )
               ])),
           Container(
-              // padding: const EdgeInsets.only(right: 10.0),
               child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             Container(
               padding: const EdgeInsets.only(right: 10),
@@ -179,21 +178,9 @@ class Home extends StatelessWidget {
           ]),
         ]),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          height: getScreenHeight(),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: [
-              TeacherBanner('assets/images/teacher_1.png', 'Jackie', 'Chan',
-                  '23', "asdkjadjaksdjashkda"),
-              Divider(
-                color: Colors.grey,
-              ),
-              TeacherBanner('assets/images/teacher_2.png', 'Jackie', 'Chan',
-                  '23', "aksdjlkajdkajldjasl")
-            ],
-          ),
-        )
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            height: getScreenHeight(),
+            child: TeacherSection())
       ]));
 
   @override

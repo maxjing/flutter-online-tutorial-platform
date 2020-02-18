@@ -32,7 +32,7 @@ class RecommendBanner extends StatelessWidget {
               _desc,
               style: TextStyle(
                   fontWeight: FontWeight.w300,
-                  fontSize: 12.0,
+                  fontSize: 10.0,
                   color: Colors.grey),
             ),
           ]))
