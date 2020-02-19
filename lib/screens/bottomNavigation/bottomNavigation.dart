@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../helper.dart';
 
 class BottomNavigation extends StatefulWidget {
   int _index;
@@ -17,7 +18,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
         BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border), title: Text('Favourite')),
+          icon: Icon(
+            Icons.favorite_border,
+          ),
+          title: Text('Favourite'),
+        ),
         BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today), title: Text('Timetable')),
         BottomNavigationBarItem(
@@ -27,6 +32,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         setState(() {
           widget._index = index;
         });
+        Navigator.pushNamed(context, getRouteByIndex(index));
       },
     );
   }

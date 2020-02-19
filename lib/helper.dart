@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 import 'style.dart';
+import 'routes.dart';
 
 double getScreenWidth() {
   double screenWidth =
@@ -50,6 +51,36 @@ ui.Color getAreaColor(String area) {
     default:
       {
         return Area_MindSetColor;
+      }
+      break;
+  }
+}
+
+String getRouteByIndex(int index) {
+  switch (index) {
+    case 0:
+      {
+        return IndexRoute;
+      }
+      break;
+    case 1:
+      {
+        return FavouriteRoute;
+      }
+      break;
+    case 2:
+      {
+        return TimetableRoute;
+      }
+      break;
+    case 3:
+      {
+        return ProfileRoute;
+      }
+      break;
+    default:
+      {
+        return IndexRoute;
       }
       break;
   }

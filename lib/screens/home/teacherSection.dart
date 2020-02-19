@@ -15,7 +15,11 @@ class _TeacherSectionState extends State<TeacherSection> {
   bool _isLoading = true;
 
   _getTeachers() async {
-    Query q = _firestore.collection('users').orderBy('clicks').limit(10);
+    Query q = _firestore
+        .collection('users')
+        .where('type', isEqualTo: 'teacher')
+        .orderBy('clicks')
+        .limit(10);
     setState(() {
       _isLoading = true;
     });

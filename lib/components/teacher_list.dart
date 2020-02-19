@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'area_banner.dart';
+import '../routes.dart';
 
 class TeacherList extends StatefulWidget {
   final List<DocumentSnapshot> list;
@@ -23,23 +24,32 @@ class _TeacherListState extends State<TeacherList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
+        separatorBuilder: (context, index) => Divider(
+              color: Colors.grey,
+            ),
         itemCount: widget.list.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-              leading: Image.network(widget.list[index].data['profileIcon']),
-              title: Text(widget.list[index].data['firstName'] +
-                  " " +
-                  widget.list[index].data['lastName'] +
-                  ' | ' +
-                  widget.list[index].data['age'].toString()),
-              subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    getAreaBanner(widget.list[index].data['areas']),
-                    Text(widget.list[index].data['description'])
-                  ]),
-              trailing: widget.trail);
+            contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+            leading: Image.network(widget.list[index].data['profileIcon']),
+            title: Text(widget.list[index].data['firstName'] +
+                " " +
+                widget.list[index].data['lastName'] +
+                ' | ' +
+                widget.list[index].data['age'].toString()),
+            subtitle:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              getAreaBanner(widget.list[index].data['areas']),
+              Text(widget.list[index].data['description'])
+            ]),
+            trailing: widget.trail,
+            onTap: () => _onTeacherTap(context, widget.list[index].documentID),
+          );
         });
+  }
+
+  _onTeacherTap(BuildContext context, String teacherID) {
+    Navigator.pushNamed(context, TeacherRoute, arguments: {'id': teacherID});
   }
 }
