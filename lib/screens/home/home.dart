@@ -3,7 +3,6 @@ import '../../helper.dart';
 import '../../style.dart';
 import 'categoryButton.dart';
 import 'recommendBanner.dart';
-import '../bottomNavigation/bottomNavigation.dart';
 import 'teacherSection.dart';
 
 class Home extends StatelessWidget {
@@ -185,15 +184,13 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: ListView(children: [
-          titleSection,
-          searchBar,
-          header,
-          categorySection,
-          recommendSection,
-          teacherSection,
-        ]),
-        bottomNavigationBar: BottomNavigation(0));
+    return ListView(children: [
+      titleSection,
+      searchBar,
+      header,
+      categorySection,
+      recommendSection,
+      teacherSection,
+    ]);
   }
 }

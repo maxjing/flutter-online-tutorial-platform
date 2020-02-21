@@ -10,12 +10,46 @@ import 'style.dart';
 
 void main() => runApp(App());
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  int _selectedPage = 0;
+  final _pageOptions = [Home(), Favourite(), Timetable(), Login()];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       onGenerateRoute: _routes(),
-      home: Home(),
+      home: Login(),
+      //     Scaffold(
+      //   body: _pageOptions[_selectedPage],
+      //   bottomNavigationBar: BottomNavigationBar(
+      //     type: BottomNavigationBarType.fixed,
+      //     iconSize: 30.0,
+      //     currentIndex: _selectedPage,
+      //     items: [
+      //       BottomNavigationBarItem(
+      //           icon: Icon(Icons.home), title: Text('Home')),
+      //       BottomNavigationBarItem(
+      //         icon: Icon(
+      //           Icons.favorite_border,
+      //         ),
+      //         title: Text('Favourite'),
+      //       ),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(Icons.calendar_today), title: Text('Timetable')),
+      //       BottomNavigationBarItem(
+      //           icon: Icon(Icons.person_outline), title: Text('Profile')),
+      //     ],
+      //     onTap: (index) {
+      //       setState(() {
+      //         _selectedPage = index;
+      //       });
+      //     },
+      //   ),
+      // ),
       theme: _theme(),
     );
   }
@@ -25,7 +59,7 @@ class App extends StatelessWidget {
       final Map<String, dynamic> arguments = settings.arguments;
       Widget screen;
       switch (settings.name) {
-        case IndexRoute:
+        case '/':
           screen = Home();
           break;
         case FavouriteRoute:
