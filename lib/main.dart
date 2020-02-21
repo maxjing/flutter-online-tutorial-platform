@@ -5,6 +5,7 @@ import 'screens/teacher/teacher.dart';
 import 'screens/favourite/favourite.dart';
 import 'screens/timetable/timetable.dart';
 import 'screens/profile/profile.dart';
+import 'screens/login/login.dart';
 import 'style.dart';
 
 void main() => runApp(App());
@@ -34,7 +35,7 @@ class App extends StatelessWidget {
           screen = Timetable();
           break;
         case ProfileRoute:
-          screen = Profile();
+          screen = Login();
           break;
         case TeacherRoute:
           screen = Teacher(arguments['id']);

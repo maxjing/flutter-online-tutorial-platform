@@ -67,7 +67,7 @@ class Home extends StatelessWidget {
         prefixIcon: const Icon(
           Icons.search,
         ),
-        labelStyle: new TextStyle(color: Colors.black),
+        labelStyle: TextStyle(color: Colors.black),
         // ),
       ),
     ),
