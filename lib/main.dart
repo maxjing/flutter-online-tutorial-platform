@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'style.dart';
 import 'routes.dart';
 import 'screens/home/home.dart';
 import 'screens/teacher/teacher.dart';
@@ -6,7 +7,10 @@ import 'screens/favourite/favourite.dart';
 import 'screens/timetable/timetable.dart';
 import 'screens/profile/profile.dart';
 import 'screens/login/login.dart';
-import 'style.dart';
+import 'screens/login/teacherLogin.dart';
+import 'screens/login/studentLogin.dart';
+import 'screens/signup/teacherSignup.dart';
+import 'screens/signup/studentSignup.dart';
 
 void main() => runApp(App());
 
@@ -16,8 +20,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  int _selectedPage = 0;
-  final _pageOptions = [Home(), Favourite(), Timetable(), Login()];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,7 +61,10 @@ class _AppState extends State<App> {
       final Map<String, dynamic> arguments = settings.arguments;
       Widget screen;
       switch (settings.name) {
-        case '/':
+        case IndexRoute:
+          screen = Home();
+          break;
+        case HomeRoute:
           screen = Home();
           break;
         case FavouriteRoute:
@@ -69,11 +74,24 @@ class _AppState extends State<App> {
           screen = Timetable();
           break;
         case ProfileRoute:
-          screen = Login();
+          screen = Profile();
           break;
         case TeacherRoute:
           screen = Teacher(arguments['id']);
           break;
+        case TeacherLoginRoute:
+          screen = TeacherLogin();
+          break;
+        case StudentLoginRoute:
+          screen = StudentLogin();
+          break;
+        case TeacherSignupRoute:
+          screen = TeacherSignup();
+          break;
+        case StudentSignupRoute:
+          screen = StudentSignup();
+          break;
+
         default:
           return null;
       }

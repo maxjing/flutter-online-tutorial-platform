@@ -18,6 +18,10 @@ const Area_ArtsColor = const Color(0xfff08580);
 const Area_SkillsColor = const Color(0xffffd037);
 const Area_OthersColor = const Color(0xff82e87d);
 
+//signup page
+const TeacherSignupButtonColor = const Color(0xff7d75ff);
+//login page
+const TeacherLoginButtonColor = const Color(0xffb8b4ff);
 const Body1Style = TextStyle(
   fontFamily: FontNameDefault,
   fontWeight: FontWeight.w300,
