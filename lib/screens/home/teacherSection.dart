@@ -58,16 +58,14 @@ class _TeacherSectionState extends State<TeacherSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _isLoading == true
-          ? Container(
-              child: Center(
-              child: Text('Loading...'),
-            ))
-          : Container(
-              child: _teachers.length == 0
-                  ? Center(child: Text('No result'))
-                  : TeacherList(_teachers, listTrailing)),
-    );
+    return _isLoading == true
+        ? Container(
+            child: Center(
+            child: Text('Loading...'),
+          ))
+        : Container(
+            child: _teachers.length == 0
+                ? Center(child: Text('No result'))
+                : TeacherList(_teachers, listTrailing));
   }
 }

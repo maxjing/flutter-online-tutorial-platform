@@ -1,11 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../helper.dart';
 import '../routes.dart';
 import '../style.dart';
+import '../screens/profile/profile.dart';
+import '../screens/profile/info.dart';
 
 class SignupPage extends StatefulWidget {
   final String _userType;
   final String _assetPath;
+
   SignupPage(this._userType, this._assetPath);
 
   @override
@@ -13,6 +17,133 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final _phoneController = TextEditingController();
+  final _passController = TextEditingController();
+
+  Future registerUser(String mobile, BuildContext context) async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    _auth.verifyPhoneNumber(
+        phoneNumber: mobile,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: (AuthCredential credential) {
+          _auth.signInWithCredential(credential).then((AuthResult result) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Info(user: result.user)));
+          }).catchError((e) {
+            print(e);
+          });
+        },
+        verificationFailed: (AuthException authException) {
+          print(authException.message);
+        },
+        codeSent: (String verificationId, [int forceResendingToken]) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Give the code?"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        controller: _passController,
+                      ),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text("Confirm"),
+                      textColor: Colors.white,
+                      color: Colors.blue,
+                      onPressed: () async {
+                        final code = _passController.text.trim();
+                        AuthCredential credential =
+                            PhoneAuthProvider.getCredential(
+                                verificationId: verificationId, smsCode: code);
+
+                        _auth
+                            .signInWithCredential(credential)
+                            .then((AuthResult result) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Info(user: result.user)));
+                        }).catchError((e) {
+                          print(e);
+                        });
+                      },
+                    )
+                  ],
+                );
+              });
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          verificationId = verificationId;
+          print(verificationId);
+          print("Timout");
+        });
+  }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //       body: Container(
+  //     padding: EdgeInsets.all(32),
+  //     child: Form(
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: <Widget>[
+  //           Text(
+  //             "Login",
+  //             style: TextStyle(
+  //                 color: Colors.lightBlue,
+  //                 fontSize: 36,
+  //                 fontWeight: FontWeight.w500),
+  //           ),
+  //           SizedBox(
+  //             height: 16,
+  //           ),
+  //           TextFormField(
+  //             decoration: InputDecoration(
+  //                 enabledBorder: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.all(Radius.circular(8)),
+  //                     borderSide: BorderSide(color: Colors.grey[200])),
+  //                 focusedBorder: OutlineInputBorder(
+  //                     borderRadius: BorderRadius.all(Radius.circular(8)),
+  //                     borderSide: BorderSide(color: Colors.grey[300])),
+  //                 filled: true,
+  //                 fillColor: Colors.grey[100],
+  //                 hintText: "Phone Number"),
+  //             controller: _phoneController,
+  //           ),
+  //           SizedBox(
+  //             height: 16,
+  //           ),
+  //           Container(
+  //             width: double.infinity,
+  //             child: FlatButton(
+  //               child: Text("Login"),
+  //               textColor: Colors.white,
+  //               padding: EdgeInsets.all(16),
+  //               onPressed: () {
+  //                 final mobile = _phoneController.text.trim();
+  //                 registerUser(mobile, context);
+  //               },
+  //               color: Colors.blue,
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   ));
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,76 +231,16 @@ class _SignupPageState extends State<SignupPage> {
                                 ),
                                 filled: true,
                                 fillColor: Color.fromRGBO(255, 255, 255, 0.3),
-                                hintText: "USER NAME",
+                                hintText: "PHONE NUMBER",
                                 hintStyle: TextStyle(
                                     color: Colors.white,
                                     fontSize: 13.0,
                                     fontWeight: FontWeight.bold),
                               ),
+                              controller: _phoneController,
                               style: TextStyle(
                                 color: Colors.white,
                               ),
-                            ),
-                          )),
-                      Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          alignment: Alignment.center,
-                          child: Container(
-                            child: TextField(
-                              autofocus: true,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(17.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                                filled: true,
-                                fillColor: Color.fromRGBO(255, 255, 255, 0.3),
-                                hintText: "PASSWORD",
-                                hintStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                              obscureText: true,
-                            ),
-                          )),
-                      SizedBox(height: 20.0),
-                      Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          alignment: Alignment.center,
-                          child: Container(
-                            child: TextField(
-                              autofocus: true,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(17.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                                filled: true,
-                                fillColor: Color.fromRGBO(255, 255, 255, 0.3),
-                                hintText: "CONFIRM PASSWORD",
-                                hintStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                              obscureText: true,
                             ),
                           )),
                       SizedBox(height: 20.0),
@@ -181,7 +252,10 @@ class _SignupPageState extends State<SignupPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(17.0),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              final mobile = _phoneController.text.trim();
+                              registerUser(mobile, context);
+                            },
                             child: Text('SIGN UP',
                                 style: TextStyle(color: Colors.white))),
                       ),

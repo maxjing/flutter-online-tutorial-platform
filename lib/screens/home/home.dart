@@ -5,7 +5,12 @@ import 'categoryButton.dart';
 import 'recommendBanner.dart';
 import 'teacherSection.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   Widget titleSection = Container(
       padding: const EdgeInsets.all(20),
       child: Row(
@@ -90,7 +95,7 @@ class Home extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 20),
-          height: getScreenWidth() * 0.3,
+          height: getScreenWidth() * 0.35,
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [

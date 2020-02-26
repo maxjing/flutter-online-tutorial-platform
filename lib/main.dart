@@ -11,6 +11,7 @@ import 'screens/login/teacherLogin.dart';
 import 'screens/login/studentLogin.dart';
 import 'screens/signup/teacherSignup.dart';
 import 'screens/signup/studentSignup.dart';
+import 'screens/profile/info.dart';
 
 void main() => runApp(App());
 
@@ -20,38 +21,39 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  int _selectedPage = 0;
+  final _pageOptions = [Home(), Favourite(), Timetable(), Profile()];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       onGenerateRoute: _routes(),
-      home: Login(),
-      //     Scaffold(
-      //   body: _pageOptions[_selectedPage],
-      //   bottomNavigationBar: BottomNavigationBar(
-      //     type: BottomNavigationBarType.fixed,
-      //     iconSize: 30.0,
-      //     currentIndex: _selectedPage,
-      //     items: [
-      //       BottomNavigationBarItem(
-      //           icon: Icon(Icons.home), title: Text('Home')),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.favorite_border,
-      //         ),
-      //         title: Text('Favourite'),
-      //       ),
-      //       BottomNavigationBarItem(
-      //           icon: Icon(Icons.calendar_today), title: Text('Timetable')),
-      //       BottomNavigationBarItem(
-      //           icon: Icon(Icons.person_outline), title: Text('Profile')),
-      //     ],
-      //     onTap: (index) {
-      //       setState(() {
-      //         _selectedPage = index;
-      //       });
-      //     },
-      //   ),
-      // ),
+      home: Scaffold(
+        body: _pageOptions[_selectedPage],
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          iconSize: 30.0,
+          currentIndex: _selectedPage,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home), title: Text('Home')),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.favorite_border,
+              ),
+              title: Text('Favourite'),
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_today), title: Text('Timetable')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline), title: Text('Profile')),
+          ],
+          onTap: (index) {
+            setState(() {
+              _selectedPage = index;
+            });
+          },
+        ),
+      ),
       theme: _theme(),
     );
   }
@@ -90,6 +92,9 @@ class _AppState extends State<App> {
           break;
         case StudentSignupRoute:
           screen = StudentSignup();
+          break;
+        case ProfileInfoRoute:
+          screen = Info();
           break;
 
         default:

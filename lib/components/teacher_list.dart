@@ -25,6 +25,8 @@ class _TeacherListState extends State<TeacherList> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
         separatorBuilder: (context, index) => Divider(
               color: Colors.grey,
             ),

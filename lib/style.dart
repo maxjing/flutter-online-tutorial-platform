@@ -22,6 +22,7 @@ const Area_OthersColor = const Color(0xff82e87d);
 const TeacherSignupButtonColor = const Color(0xff7d75ff);
 //login page
 const TeacherLoginButtonColor = const Color(0xffb8b4ff);
+const InfoTextfieldColor = const Color(0xffa6a6a6);
 const Body1Style = TextStyle(
   fontFamily: FontNameDefault,
   fontWeight: FontWeight.w300,
