@@ -36,8 +36,8 @@ class Profile extends StatelessWidget {
               disabledTextColor: Colors.black,
               padding: EdgeInsets.all(8.0),
               splashColor: Colors.blueAccent,
-              onPressed: () => Navigator.pushNamed(context, '/signup/teacher'),
-              child: Text('Sign up')),
+              onPressed: () => Navigator.pushNamed(context, '/login'),
+              child: Text('Log in')),
           SizedBox(height: 30.0),
           FlatButton(
               color: Colors.blue,

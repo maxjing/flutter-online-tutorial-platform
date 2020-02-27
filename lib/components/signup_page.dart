@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../helper.dart';
 import '../routes.dart';
 import '../style.dart';
-import '../screens/profile/profile.dart';
 import '../screens/profile/info.dart';
 
 class SignupPage extends StatefulWidget {
@@ -18,7 +17,7 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _phoneController = TextEditingController();
-  final _passController = TextEditingController();
+  final _codeController = TextEditingController();
 
   Future registerUser(String mobile, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -45,12 +44,12 @@ class _SignupPageState extends State<SignupPage> {
               barrierDismissible: false,
               builder: (context) {
                 return AlertDialog(
-                  title: Text("Give the code?"),
+                  title: Text("Please enter the code?"),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       TextField(
-                        controller: _passController,
+                        controller: _codeController,
                       ),
                     ],
                   ),
@@ -60,7 +59,7 @@ class _SignupPageState extends State<SignupPage> {
                       textColor: Colors.white,
                       color: Colors.blue,
                       onPressed: () async {
-                        final code = _passController.text.trim();
+                        final code = _codeController.text.trim();
                         AuthCredential credential =
                             PhoneAuthProvider.getCredential(
                                 verificationId: verificationId, smsCode: code);
@@ -88,61 +87,6 @@ class _SignupPageState extends State<SignupPage> {
           print("Timout");
         });
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //       body: Container(
-  //     padding: EdgeInsets.all(32),
-  //     child: Form(
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: <Widget>[
-  //           Text(
-  //             "Login",
-  //             style: TextStyle(
-  //                 color: Colors.lightBlue,
-  //                 fontSize: 36,
-  //                 fontWeight: FontWeight.w500),
-  //           ),
-  //           SizedBox(
-  //             height: 16,
-  //           ),
-  //           TextFormField(
-  //             decoration: InputDecoration(
-  //                 enabledBorder: OutlineInputBorder(
-  //                     borderRadius: BorderRadius.all(Radius.circular(8)),
-  //                     borderSide: BorderSide(color: Colors.grey[200])),
-  //                 focusedBorder: OutlineInputBorder(
-  //                     borderRadius: BorderRadius.all(Radius.circular(8)),
-  //                     borderSide: BorderSide(color: Colors.grey[300])),
-  //                 filled: true,
-  //                 fillColor: Colors.grey[100],
-  //                 hintText: "Phone Number"),
-  //             controller: _phoneController,
-  //           ),
-  //           SizedBox(
-  //             height: 16,
-  //           ),
-  //           Container(
-  //             width: double.infinity,
-  //             child: FlatButton(
-  //               child: Text("Login"),
-  //               textColor: Colors.white,
-  //               padding: EdgeInsets.all(16),
-  //               onPressed: () {
-  //                 final mobile = _phoneController.text.trim();
-  //                 registerUser(mobile, context);
-  //               },
-  //               color: Colors.blue,
-  //             ),
-  //           )
-  //         ],
-  //       ),
-  //     ),
-  //   ));
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -200,15 +144,6 @@ class _SignupPageState extends State<SignupPage> {
                       Container(
                           padding: const EdgeInsets.only(left: 20.0),
                           alignment: Alignment.bottomLeft,
-                          child: Text('New User?',
-                              style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 11.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold))),
-                      Container(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          alignment: Alignment.bottomLeft,
                           child: Text('Sign up',
                               style: TextStyle(
                                   fontSize: 30.0,
@@ -243,7 +178,7 @@ class _SignupPageState extends State<SignupPage> {
                               ),
                             ),
                           )),
-                      SizedBox(height: 20.0),
+                      SizedBox(height: 10.0),
                       ButtonTheme(
                         minWidth: getScreenWidth() * 0.9,
                         buttonColor: TeacherSignupButtonColor,

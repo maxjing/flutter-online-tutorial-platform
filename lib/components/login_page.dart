@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../helper.dart';
 import '../routes.dart';
+import '../style.dart';
+import '../screens/profile/info.dart';
 
 class LoginPage extends StatefulWidget {
   final String _userType;
@@ -13,6 +16,78 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPagerState extends State<LoginPage> {
+  final _phoneController = TextEditingController();
+  final _codeController = TextEditingController();
+
+  Future registerUser(String mobile, BuildContext context) async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+
+    _auth.verifyPhoneNumber(
+        phoneNumber: mobile,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: (AuthCredential credential) {
+          _auth.signInWithCredential(credential).then((AuthResult result) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Info(user: result.user)));
+          }).catchError((e) {
+            print(e);
+          });
+        },
+        verificationFailed: (AuthException authException) {
+          print(authException.message);
+        },
+        codeSent: (String verificationId, [int forceResendingToken]) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Please enter the code?"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        controller: _codeController,
+                      ),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text("Confirm"),
+                      textColor: Colors.white,
+                      color: Colors.blue,
+                      onPressed: () async {
+                        final code = _codeController.text.trim();
+                        AuthCredential credential =
+                            PhoneAuthProvider.getCredential(
+                                verificationId: verificationId, smsCode: code);
+
+                        _auth
+                            .signInWithCredential(credential)
+                            .then((AuthResult result) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Info(user: result.user)));
+                        }).catchError((e) {
+                          print(e);
+                        });
+                      },
+                    )
+                  ],
+                );
+              });
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          verificationId = verificationId;
+          print(verificationId);
+          print("Timout");
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +153,7 @@ class _LoginPagerState extends State<LoginPage> {
                           padding: const EdgeInsets.all(20.0),
                           child: Container(
                             child: TextField(
-                              autofocus: true,
+                              controller: _phoneController,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
@@ -91,7 +166,7 @@ class _LoginPagerState extends State<LoginPage> {
                                 ),
                                 filled: true,
                                 fillColor: Color.fromRGBO(255, 255, 255, 0.3),
-                                hintText: "USER NAME",
+                                hintText: "PHONE NUMBER",
                                 hintStyle: TextStyle(
                                     color: Colors.white,
                                     fontSize: 13.0,
@@ -102,37 +177,7 @@ class _LoginPagerState extends State<LoginPage> {
                               ),
                             ),
                           )),
-                      Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          alignment: Alignment.center,
-                          child: Container(
-                            child: TextField(
-                              autofocus: true,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(17.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
-                                ),
-                                filled: true,
-                                fillColor: Color.fromRGBO(255, 255, 255, 0.3),
-                                hintText: "PASSWORD",
-                                hintStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                              obscureText: true,
-                            ),
-                          )),
-                      SizedBox(height: 20.0),
+                      SizedBox(height: 10.0),
                       ButtonTheme(
                         minWidth: getScreenWidth() * 0.9,
                         buttonColor: Colors.white,
@@ -141,7 +186,10 @@ class _LoginPagerState extends State<LoginPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(17.0),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              final mobile = _phoneController.text.trim();
+                              registerUser(mobile, context);
+                            },
                             child: Text('LOG IN')),
                       ),
                       SizedBox(height: 20.0),
@@ -151,17 +199,32 @@ class _LoginPagerState extends State<LoginPage> {
                               onTap: () => Navigator.pushNamed(
                                   context, widget._signupRoute),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text('Sign up',
-                                      style: TextStyle(
-                                          fontSize: 30.0,
+                                  Container(
+                                      padding:
+                                          const EdgeInsets.only(left: 20.0),
+                                      alignment: Alignment.bottomLeft,
+                                      child: Text('New User?',
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                              fontSize: 16.0,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold))),
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text('Sign up',
+                                            style: TextStyle(
+                                                fontSize: 30.0,
+                                                color: TeacherSignupButtonColor,
+                                                fontWeight: FontWeight.bold)),
+                                        Icon(
+                                          Icons.arrow_forward,
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold)),
-                                  Icon(
-                                    Icons.arrow_forward,
-                                    color: Colors.white,
-                                  ),
+                                        ),
+                                      ])
                                 ],
                               ))),
                     ],

@@ -81,6 +81,9 @@ class _AppState extends State<App> {
         case TeacherRoute:
           screen = Teacher(arguments['id']);
           break;
+        case LoginRoute:
+          screen = Login();
+          break;
         case TeacherLoginRoute:
           screen = TeacherLogin();
           break;
