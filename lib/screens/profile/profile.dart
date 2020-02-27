@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import './info.dart';
 
 class Profile extends StatelessWidget {
-  final FirebaseUser user;
-
-  Profile({this.user});
-
+  Profile({Key key}) : super(key: key);
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,12 +21,13 @@ class Profile extends StatelessWidget {
           SizedBox(
             height: 16,
           ),
-          Text(
-            user != null ? "${user.phoneNumber}" : "",
-            style: TextStyle(
-              color: Colors.grey,
-            ),
-          ),
+
+          // Text(
+          //   user != null ? "${user.phoneNumber}" : "",
+          //   style: TextStyle(
+          //     color: Colors.grey,
+          //   ),
+          // ),
           FlatButton(
               color: Colors.blue,
               textColor: Colors.white,
@@ -39,16 +38,17 @@ class Profile extends StatelessWidget {
               onPressed: () => Navigator.pushNamed(context, '/login'),
               child: Text('Log in')),
           SizedBox(height: 30.0),
-          FlatButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Colors.blueAccent,
-              onPressed: () => Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => Info(user: user))),
-              child: Text('Info'))
+          RaisedButton(child: Text("sign out"), onPressed: auth.signOut),
+          // FlatButton(
+          //     color: Colors.blue,
+          //     textColor: Colors.white,
+          //     disabledColor: Colors.grey,
+          //     disabledTextColor: Colors.black,
+          //     padding: EdgeInsets.all(8.0),
+          //     splashColor: Colors.blueAccent,
+          //     onPressed: () => Navigator.pushReplacement(context,
+          //         MaterialPageRoute(builder: (context) => Info(user: user))),
+          //     child: Text('Info'))
         ],
       ),
     ));

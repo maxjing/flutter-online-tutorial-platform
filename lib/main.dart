@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'style.dart';
 import 'routes.dart';
 import 'screens/home/home.dart';
@@ -12,50 +14,42 @@ import 'screens/login/studentLogin.dart';
 import 'screens/signup/teacherSignup.dart';
 import 'screens/signup/studentSignup.dart';
 import 'screens/profile/info.dart';
+import 'bottomNavigation.dart';
 
 void main() => runApp(App());
 
-class App extends StatefulWidget {
-  @override
-  _AppState createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  int _selectedPage = 0;
-  final _pageOptions = [Home(), Favourite(), Timetable(), Profile()];
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      onGenerateRoute: _routes(),
-      home: Scaffold(
-        body: _pageOptions[_selectedPage],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          iconSize: 30.0,
-          currentIndex: _selectedPage,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: Text('Home')),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite_border,
-              ),
-              title: Text('Favourite'),
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_today), title: Text('Timetable')),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline), title: Text('Profile')),
-          ],
-          onTap: (index) {
-            setState(() {
-              _selectedPage = index;
-            });
-          },
-        ),
+    return MultiProvider(
+      providers: [
+        StreamProvider<FirebaseUser>.value(
+            value: FirebaseAuth.instance.onAuthStateChanged),
+      ],
+      child: MaterialApp(
+        onGenerateRoute: _routes(),
+        home: _getLandingPage(),
+        theme: _theme(),
       ),
-      theme: _theme(),
     );
+  }
+
+  Widget _getLandingPage() {
+    return StreamBuilder<FirebaseUser>(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.hasData) {
+          return BottomNavigationBarController();
+        }
+
+        return Login();
+      },
+    );
+  }
+
+  Future getCurrentUser() async {
+    FirebaseUser _user = await FirebaseAuth.instance.currentUser();
+    return _user;
   }
 
   RouteFactory _routes() {
@@ -116,5 +110,31 @@ class _AppState extends State<App> {
         // )
 
         );
+  }
+}
+
+class HeroScreen extends StatelessWidget {
+  final auth = FirebaseAuth.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    var user = Provider.of<FirebaseUser>(context);
+    bool isLogin = user != null;
+
+    return Column(
+      children: <Widget>[
+        if (isLogin) ...[
+          RaisedButton(child: Text("sign out"), onPressed: auth.signOut),
+        ],
+        if (!isLogin) ...[
+          RaisedButton(
+            child: Text(
+              'login',
+            ),
+            onPressed: () => Navigator.pushNamed(context, LoginRoute),
+          ),
+        ]
+      ],
+    );
   }
 }

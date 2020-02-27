@@ -5,12 +5,8 @@ import 'categoryButton.dart';
 import 'recommendBanner.dart';
 import 'teacherSection.dart';
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
+class Home extends StatelessWidget {
+  Home({Key key}) : super(key: key);
   Widget titleSection = Container(
       padding: const EdgeInsets.all(20),
       child: Row(
@@ -189,13 +185,14 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return Scaffold(
+        body: ListView(children: [
       titleSection,
       searchBar,
       header,
       categorySection,
       recommendSection,
       teacherSection,
-    ]);
+    ]));
   }
 }
