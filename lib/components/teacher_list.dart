@@ -1,57 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'area_banner.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../routes.dart';
+import '../style.dart';
+import '../db.dart';
+import '../models/teacher.dart';
+import 'area_banner.dart';
 
-class TeacherList extends StatefulWidget {
-  final List<DocumentSnapshot> list;
+class TeachersList extends StatefulWidget {
   final Container trail;
-  TeacherList(this.list, this.trail);
+  TeachersList(this.trail);
 
   @override
-  _TeacherListState createState() => _TeacherListState();
+  _TeachersListState createState() => _TeachersListState();
 }
 
-class _TeacherListState extends State<TeacherList> {
-  Widget getAreaBanner(Map<dynamic, dynamic> map) {
-    return Row(
-        children: map.entries
-            .map((item) => Container(
-                padding: const EdgeInsets.only(right: 5.0),
-                child: AreaBanner(item.key, item.value.toList()[0])))
-            .toList());
-  }
-
+class _TeachersListState extends State<TeachersList> {
+  final db = DatabaseService();
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        separatorBuilder: (context, index) => Divider(
-              color: Colors.grey,
-            ),
-        itemCount: widget.list.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-            leading: Image.network(widget.list[index].data['profileIcon']),
-            title: Text(widget.list[index].data['firstName'] +
-                " " +
-                widget.list[index].data['lastName'] +
-                ' | ' +
-                widget.list[index].data['age'].toString()),
-            subtitle:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              getAreaBanner(widget.list[index].data['areas']),
-              Text(widget.list[index].data['description'])
-            ]),
-            trailing: widget.trail,
-            onTap: () => _onTeacherTap(context, widget.list[index].documentID),
-          );
-        });
+    var teachers = Provider.of<List<Teacher>>(context);
+
+    return teachers == null
+        ? CircularProgressIndicator()
+        : Column(children: <Widget>[
+            ListView.separated(
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                separatorBuilder: (context, index) => Divider(
+                      color: Colors.grey,
+                    ),
+                itemCount: teachers.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+                    leading: Image.network(teachers[index].icon),
+                    title: Text(teachers[index].firstName +
+                        " " +
+                        teachers[index].lastName +
+                        ' | ' +
+                        teachers[index].age.toString()),
+                    subtitle: StreamProvider<List<Teach>>.value(
+                      value: db.streamTeachesByUserId(teachers[index].id),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TeachesBanners(),
+                            Text(teachers[index].description)
+                          ]),
+                    ),
+                    trailing: widget.trail,
+                    onTap: () => _onTeacherTap(context, teachers[index].id),
+                  );
+                })
+          ]);
   }
 
   _onTeacherTap(BuildContext context, String teacherID) {
     Navigator.pushNamed(context, TeacherRoute, arguments: {'id': teacherID});
+  }
+}
+
+class TeachesBanners extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var teaches = Provider.of<List<Teach>>(context);
+
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: teaches.map((teach) {
+          return Container(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: AreaBanner(teach.category, teach.name));
+        }).toList());
   }
 }

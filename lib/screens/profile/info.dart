@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../helper.dart';
 import '../../style.dart';
+import '../../db.dart';
+import '../../models/teacher.dart';
 
 class Info extends StatefulWidget {
   final FirebaseUser user;

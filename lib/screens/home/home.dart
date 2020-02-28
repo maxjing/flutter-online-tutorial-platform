@@ -3,7 +3,7 @@ import '../../helper.dart';
 import '../../style.dart';
 import 'categoryButton.dart';
 import 'recommendBanner.dart';
-import 'teacherSection.dart';
+import 'homepageTeacherList.dart';
 
 class Home extends StatelessWidget {
   Home({Key key}) : super(key: key);
@@ -180,7 +180,7 @@ class Home extends StatelessWidget {
         Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
             height: getScreenHeight(),
-            child: TeacherSection())
+            child: HomepageTeacherList())
       ]));
 
   @override

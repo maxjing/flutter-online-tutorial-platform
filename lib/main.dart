@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'style.dart';
 import 'routes.dart';
 import 'screens/home/home.dart';
-import 'screens/teacher/teacher.dart';
+import 'screens/teacher/teacherDetail.dart';
 import 'screens/favourite/favourite.dart';
 import 'screens/timetable/timetable.dart';
 import 'screens/profile/profile.dart';
@@ -47,11 +47,6 @@ class App extends StatelessWidget {
     );
   }
 
-  Future getCurrentUser() async {
-    FirebaseUser _user = await FirebaseAuth.instance.currentUser();
-    return _user;
-  }
-
   RouteFactory _routes() {
     return (settings) {
       final Map<String, dynamic> arguments = settings.arguments;
@@ -73,7 +68,7 @@ class App extends StatelessWidget {
           screen = Profile();
           break;
         case TeacherRoute:
-          screen = Teacher(arguments['id']);
+          screen = TeacherDetail(arguments['id']);
           break;
         case LoginRoute:
           screen = Login();
@@ -110,31 +105,5 @@ class App extends StatelessWidget {
         // )
 
         );
-  }
-}
-
-class HeroScreen extends StatelessWidget {
-  final auth = FirebaseAuth.instance;
-
-  @override
-  Widget build(BuildContext context) {
-    var user = Provider.of<FirebaseUser>(context);
-    bool isLogin = user != null;
-
-    return Column(
-      children: <Widget>[
-        if (isLogin) ...[
-          RaisedButton(child: Text("sign out"), onPressed: auth.signOut),
-        ],
-        if (!isLogin) ...[
-          RaisedButton(
-            child: Text(
-              'login',
-            ),
-            onPressed: () => Navigator.pushNamed(context, LoginRoute),
-          ),
-        ]
-      ],
-    );
   }
 }
