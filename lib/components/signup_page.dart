@@ -118,7 +118,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.pushNamed(context, IndexRoute),
+                          onTap: () => Navigator.pushNamed(context, HomeRoute),
                           child: Container(
                             child: const Text('Skip',
                                 style: TextStyle(

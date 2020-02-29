@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../helper.dart';
 import '../../style.dart';
-import 'categoryButton.dart';
 import 'recommendBanner.dart';
 import 'homepageTeacherList.dart';
+import 'categoryList.dart';
 
 class Home extends StatelessWidget {
   Home({Key key}) : super(key: key);
@@ -90,25 +90,9 @@ class Home extends StatelessWidget {
               fontWeight: FontWeight.w500, fontSize: 16.0, color: Colors.black),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          height: getScreenWidth() * 0.35,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              CategoryButton('assets/images/category_1.png', 'Mindset'),
-              Padding(padding: EdgeInsets.all(10.00)),
-              CategoryButton('assets/images/category_2.png', 'Athletic'),
-              Padding(padding: EdgeInsets.all(10.00)),
-              CategoryButton('assets/images/category_3.png', 'Academic'),
-              Padding(padding: EdgeInsets.all(10.00)),
-              CategoryButton('assets/images/category_4.png', 'Arts'),
-              Padding(padding: EdgeInsets.all(10.00)),
-              CategoryButton('assets/images/category_5.png', 'Skills'),
-              Padding(padding: EdgeInsets.all(10.00)),
-              CategoryButton('assets/images/category_6.png', 'Others'),
-            ],
-          ),
-        )
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            height: getScreenWidth() * 0.35,
+            child: CategoryList())
       ]));
 
   Widget recommendSection = Container(

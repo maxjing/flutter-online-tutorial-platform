@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import './models/teacher.dart';
+import './models/category.dart';
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;
 
+/*  teacher    */
   Future<Teacher> getTeacher(String id) async {
     var snap = await _db.collection('teachers').document(id).get();
 
@@ -25,7 +27,7 @@ class DatabaseService {
         .map((snap) => Teacher.fromMap(snap.data));
   }
 
-  /// Query a subcollection
+/* teacher subcollection teaches */
   Stream<List<Teach>> streamTeaches(FirebaseUser user) {
     var ref =
         _db.collection('teachers').document(user.uid).collection('teaches');
@@ -39,6 +41,23 @@ class DatabaseService {
 
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Teach.fromFirestore(doc)).toList());
+  }
+
+/*  categories    */
+  Stream<List<Category>> streamCategories() {
+    return _db.collection('categories').orderBy('order').snapshots().map(
+        (list) =>
+            list.documents.map((doc) => Category.fromFirestore(doc)).toList());
+  }
+
+  /* category subcollection courses */
+
+  Stream<List<Course>> streamCoursesByCategory(String category) {
+    var ref =
+        _db.collection('categories').document(category).collection('courses');
+
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => Course.fromFirestore(doc)).toList());
   }
 
   // Future<void> createHero(FirebaseUser user) {

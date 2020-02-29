@@ -66,12 +66,14 @@ class TeachesBanners extends StatelessWidget {
   Widget build(BuildContext context) {
     var teaches = Provider.of<List<Teach>>(context);
 
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: teaches.map((teach) {
-          return Container(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: AreaBanner(teach.category, teach.name));
-        }).toList());
+    return teaches == null
+        ? LinearProgressIndicator()
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: teaches.map((teach) {
+              return Container(
+                  padding: const EdgeInsets.only(right: 5.0),
+                  child: AreaBanner(teach.category, teach.name));
+            }).toList());
   }
 }

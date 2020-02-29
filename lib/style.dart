@@ -12,7 +12,8 @@ const SearchBarColor = const Color(0xffeeedf0);
 
 const Area_MindSetColor = const Color(0xffffb9b9);
 const Area_AthleticColor = const Color(0xff009688);
-const Area_AcademicColor = const Color(0xff6c63ff);
+const Area_AcademicColor = const Color(0xffb8b4ff);
+const Dark_AcademicColor = const Color(0xff6c63ff);
 const Area_ArtsColor = const Color(0xfff08580);
 
 const Area_SkillsColor = const Color(0xffffd037);

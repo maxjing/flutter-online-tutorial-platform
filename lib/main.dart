@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'style.dart';
 import 'routes.dart';
+import 'bottomNavigation.dart';
 import 'screens/home/home.dart';
 import 'screens/teacher/teacherDetail.dart';
 import 'screens/favourite/favourite.dart';
@@ -14,7 +15,7 @@ import 'screens/login/studentLogin.dart';
 import 'screens/signup/teacherSignup.dart';
 import 'screens/signup/studentSignup.dart';
 import 'screens/profile/info.dart';
-import 'bottomNavigation.dart';
+import 'screens/courses/courses.dart';
 
 void main() => runApp(App());
 
@@ -53,10 +54,10 @@ class App extends StatelessWidget {
       Widget screen;
       switch (settings.name) {
         case IndexRoute:
-          screen = Home();
+          screen = BottomNavigationBarController();
           break;
         case HomeRoute:
-          screen = Home();
+          screen = BottomNavigationBarController();
           break;
         case FavouriteRoute:
           screen = Favourite();
@@ -87,6 +88,9 @@ class App extends StatelessWidget {
           break;
         case ProfileInfoRoute:
           screen = Info();
+          break;
+        case CoursesRoute:
+          screen = Courses(arguments['id']);
           break;
 
         default:

@@ -15,34 +15,34 @@ double getScreenHeight() {
 }
 
 ui.Color getAreaColor(String area) {
-  switch (area) {
-    case "MindSet":
+  switch (area.toLowerCase()) {
+    case "mindSet":
       {
         return Area_MindSetColor;
       }
       break;
 
-    case "Academic":
+    case "academic":
       {
         return Area_AcademicColor;
       }
       break;
-    case "Athletic":
+    case "athletic":
       {
         return Area_AthleticColor;
       }
       break;
-    case "Arts":
+    case "arts":
       {
         return Area_ArtsColor;
       }
       break;
-    case "Skills":
+    case "skills":
       {
         return Area_SkillsColor;
       }
       break;
-    case "Others":
+    case "others":
       {
         return Area_OthersColor;
       }

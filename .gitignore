@@ -40,3 +40,4 @@ lib/generated_plugin_registrant.dart
 *google-services.json
 *GoogleService-Info.plist
 test.dart
+template.dart

@@ -28,7 +28,6 @@ class HomepageTeacherList extends StatelessWidget {
       semanticLabel: 'like',
     ),
   ]));
-
   @override
   Widget build(BuildContext context) {
     return Container(
