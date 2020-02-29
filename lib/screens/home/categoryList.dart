@@ -19,7 +19,7 @@ class CategoryButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     var categories = Provider.of<List<Category>>(context);
     return categories == null
-        ? CircularProgressIndicator()
+        ? LinearProgressIndicator
         : ListView(
             scrollDirection: Axis.horizontal,
             children: categories.map((category) {

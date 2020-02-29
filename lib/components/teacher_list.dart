@@ -22,7 +22,7 @@ class _TeachersListState extends State<TeachersList> {
     var teachers = Provider.of<List<Teacher>>(context);
 
     return teachers == null
-        ? CircularProgressIndicator()
+        ? LinearProgressIndicator()
         : Column(children: <Widget>[
             ListView.separated(
                 shrinkWrap: true,
