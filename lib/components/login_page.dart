@@ -27,10 +27,10 @@ class _LoginPagerState extends State<LoginPage> {
         timeout: Duration(seconds: 60),
         verificationCompleted: (AuthCredential credential) {
           _auth.signInWithCredential(credential).then((AuthResult result) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Info(user: result.user)));
+            Navigator.pushNamed(
+              context,
+              ProfileRoute,
+            );
           }).catchError((e) {
             print(e);
           });
@@ -67,11 +67,10 @@ class _LoginPagerState extends State<LoginPage> {
                         _auth
                             .signInWithCredential(credential)
                             .then((AuthResult result) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      Info(user: result.user)));
+                          Navigator.pushNamed(
+                            context,
+                            ProfileRoute,
+                          );
                         }).catchError((e) {
                           print(e);
                         });

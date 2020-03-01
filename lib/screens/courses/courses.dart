@@ -28,7 +28,7 @@ class _CoursesState extends State<Courses> {
           children: <Widget>[
             Container(
                 constraints: BoxConstraints.expand(
-                  height: getScreenHeight() * 0.2,
+                  height: getScreenHeight() * 0.15,
                 ),
                 decoration:
                     BoxDecoration(color: getAreaColor(widget._categoryId)),
@@ -38,7 +38,6 @@ class _CoursesState extends State<Courses> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        SizedBox(height: 30.0),
                         Row(
                           children: <Widget>[
                             Text(
@@ -50,7 +49,7 @@ class _CoursesState extends State<Courses> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 10.0),
                         Searchbar()
                       ],
                     ))),
@@ -71,17 +70,25 @@ class CourseList extends StatelessWidget {
     var courses = Provider.of<List<Course>>(context);
     return courses == null
         ? LinearProgressIndicator()
-        : Container(
-            child: Column(
-                children: courses.map((course) {
-            return Container(
-              child: Column(
-                children: <Widget>[
-                  Image.network(course.img),
-                  Text(course.name),
-                ],
-              ),
-            );
-          }).toList()));
+        : GridView.count(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(20),
+            crossAxisSpacing: 20,
+            crossAxisCount: 2,
+            children: courses.map((course) {
+              return Container(
+                child: Column(
+                  children: <Widget>[
+                    Image.network(course.img, fit: BoxFit.cover),
+                    SizedBox(height: 5.0),
+                    Text(
+                      course.name,
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              );
+            }).toList());
   }
 }
