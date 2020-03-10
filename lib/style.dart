@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const LargeTextSize = 26.0;
 const MediumTextSize = 20.0;
-const BodyTextSize = 16.0;
+const BodyTextSize = 14.0;
 
 const String FontNameDefault = 'Roboto';
 
@@ -38,11 +38,18 @@ const AppBarTextStyle = TextStyle(
   color: Colors.white,
 );
 
-const TitleTextStyle = TextStyle(
+const BodyBoldText = TextStyle(
   fontFamily: FontNameDefault,
-  fontWeight: FontWeight.w300,
-  fontSize: LargeTextSize,
+  fontWeight: FontWeight.w500,
+  fontSize: BodyTextSize,
   color: Colors.black,
+);
+
+const BodyBoldGreyText = TextStyle(
+  fontFamily: FontNameDefault,
+  fontWeight: FontWeight.w500,
+  fontSize: BodyTextSize,
+  color: Colors.grey,
 );
 
 const Body1TextStyle = TextStyle(
