@@ -52,7 +52,6 @@ class Info extends StatelessWidget {
     return Scaffold(
       body: ListView(children: [
         header,
-        Text(user.uid),
         StreamProvider<Teacher>.value(
             value: db.streamTeacher('CEkSQsi9rdllaSZxRihV'),
             child: InformationForm()),
@@ -60,10 +59,10 @@ class Info extends StatelessWidget {
     );
   }
 
-  Map<String, dynamic> areasMap = {
-    'Arts': ['Music', 'Movie'],
-    'Academic': ['Math', 'Chinese']
-  };
+  // Map<String, dynamic> areasMap = {
+  //   'Arts': ['Music', 'Movie'],
+  //   'Academic': ['Math', 'Chinese']
+  // };
   // void createUser() async {
   //   await databaseReference
   //       .collection("users")
@@ -130,7 +129,7 @@ class _InformationFormState extends State<InformationForm> {
             children: <Widget>[
               Container(alignment: Alignment.topLeft, child: Text('Name')),
               SizedBox(height: 10.0),
-              TextFormField(
+              TextField(
                 controller: firstName,
                 decoration: InputDecoration(
                   contentPadding:
