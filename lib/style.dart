@@ -6,6 +6,8 @@ const BodyTextSize = 14.0;
 
 const String FontNameDefault = 'Roboto';
 
+const HintColor = Color.fromRGBO(255, 255, 255, 0.3);
+
 const ThemeColor = const Color(0xfff08580);
 const ThemeLightColor = const Color(0xfffbbebb);
 const SearchBarColor = const Color(0xffeeedf0);

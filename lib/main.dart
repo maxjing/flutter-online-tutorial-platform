@@ -101,13 +101,14 @@ class App extends StatelessWidget {
   }
 
   ThemeData _theme() {
-    return ThemeData(primaryColor: ThemeColor
-        // appBarTheme: AppBarTheme(textTheme: TextTheme(title: AppBarTextStyle)),
-        // textTheme: TextTheme(
-        //   title: TitleTextStyle,
-        //   body1: Body1TextStyle,
-        // )
-
-        );
+    return ThemeData(
+      primaryColor: ThemeColor,
+      hintColor: HintColor,
+      // appBarTheme: AppBarTheme(textTheme: TextTheme(title: AppBarTextStyle)),
+      // textTheme: TextTheme(
+      //   title: TitleTextStyle,
+      //   body1: Body1TextStyle,
+      // )
+    );
   }
 }

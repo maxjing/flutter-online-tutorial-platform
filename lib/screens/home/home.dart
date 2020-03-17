@@ -7,7 +7,7 @@ import 'categoryList.dart';
 
 class Home extends StatelessWidget {
   Home({Key key}) : super(key: key);
-  Widget titleSection = Container(
+  final Widget titleSection = Container(
       padding: const EdgeInsets.all(20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +56,7 @@ class Home extends StatelessWidget {
         ],
       ));
 
-  Widget searchBar = Container(
+  final Widget searchBar = Container(
     padding: const EdgeInsets.symmetric(horizontal: 20),
     child: TextField(
       decoration: InputDecoration(
@@ -79,7 +79,7 @@ class Home extends StatelessWidget {
     ),
   );
 
-  Widget header = Container(
+  final Widget header = Container(
     padding: const EdgeInsets.all(20),
     child: Image.asset(
       'assets/images/header.png',
@@ -87,7 +87,7 @@ class Home extends StatelessWidget {
     ),
   );
 
-  Widget categorySection = Container(
+  final Widget categorySection = Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
@@ -101,7 +101,7 @@ class Home extends StatelessWidget {
             child: CategoryList())
       ]));
 
-  Widget recommendSection = Container(
+  final Widget recommendSection = Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
@@ -128,7 +128,7 @@ class Home extends StatelessWidget {
         )
       ]));
 
-  Widget teacherSection = Container(
+  final Widget teacherSection = Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [

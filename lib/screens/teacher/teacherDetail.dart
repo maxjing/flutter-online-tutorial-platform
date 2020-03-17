@@ -272,18 +272,20 @@ class TeacherDetailConten extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var teacher = Provider.of<Teacher>(context);
-    return Container(
-        child: ListView(
-      children: <Widget>[
-        teacherIcon(teacher.icon),
-        basicInfo(teacher),
-        courses(),
-        location(),
-        introduction(),
-        certificate(),
-        review(),
-        schedual(),
-      ],
-    ));
+    return teacher == null
+        ? LinearProgressIndicator()
+        : Container(
+            child: ListView(
+            children: <Widget>[
+              teacherIcon(teacher.icon),
+              basicInfo(teacher),
+              courses(),
+              location(),
+              introduction(),
+              certificate(),
+              review(),
+              schedual(),
+            ],
+          ));
   }
 }

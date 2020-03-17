@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import '../helper.dart';
 import '../routes.dart';
 import '../style.dart';
@@ -16,8 +17,10 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final _phoneController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final _codeController = TextEditingController();
+  var _validate = false;
+  var _phoneNumber;
 
   Future registerUser(String mobile, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -95,7 +98,7 @@ class _SignupPageState extends State<SignupPage> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(widget._assetPath),
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               ),
             ),
             child: Column(
@@ -151,32 +154,40 @@ class _SignupPageState extends State<SignupPage> {
                       Container(
                           padding: const EdgeInsets.all(20.0),
                           child: Container(
-                            child: TextField(
-                              autofocus: true,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(17.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    width: 0,
-                                    style: BorderStyle.none,
-                                  ),
+                              child: Form(
+                            key: formKey,
+                            child: Container(
+                              child: InternationalPhoneNumberInput(
+                                onInputChanged: (PhoneNumber number) {
+                                  _phoneNumber = number.toString();
+                                },
+                                initialCountry2LetterCode: 'CA',
+                                hintText: 'Phone Number',
+                                inputBorder: OutlineInputBorder(),
+                                isEnabled: true,
+                                autoValidate: true,
+                                formatInput: true,
+                                textStyle: TextStyle(
+                                  color: Colors.white,
                                 ),
-                                filled: true,
-                                fillColor: Color.fromRGBO(255, 255, 255, 0.3),
-                                hintText: "PHONE NUMBER",
-                                hintStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              controller: _phoneController,
-                              style: TextStyle(
-                                color: Colors.white,
+                                inputDecoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(17.0),
+                                      ),
+                                      borderSide: BorderSide(
+                                        width: 1,
+                                        style: BorderStyle.solid,
+                                      )),
+                                  filled: true,
+                                  fillColor: HintColor,
+                                ),
+                                onInputValidated: (bool value) {
+                                  _validate = value;
+                                },
                               ),
                             ),
-                          )),
+                          ))),
                       SizedBox(height: 10.0),
                       ButtonTheme(
                         minWidth: getScreenWidth() * 0.9,
@@ -187,8 +198,10 @@ class _SignupPageState extends State<SignupPage> {
                               borderRadius: BorderRadius.circular(17.0),
                             ),
                             onPressed: () {
-                              final mobile = _phoneController.text.trim();
-                              registerUser(mobile, context);
+                              if (_validate) {
+                                final mobile = _phoneNumber;
+                                registerUser(mobile, context);
+                              }
                             },
                             child: Text('SIGN UP',
                                 style: TextStyle(color: Colors.white))),
