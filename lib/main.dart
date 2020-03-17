@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'style.dart';
 import 'routes.dart';
 import 'bottomNavigation.dart';
@@ -17,7 +19,10 @@ import 'screens/signup/studentSignup.dart';
 import 'screens/profile/info.dart';
 import 'screens/courses/courses.dart';
 
-void main() => runApp(App());
+void main() => runApp(EasyLocalization(
+    child: App(),
+    supportedLocales: [Locale('en', 'US'), Locale('zh', 'CN')],
+    path: 'assets/langs'));
 
 class App extends StatelessWidget {
   @override
@@ -28,6 +33,13 @@ class App extends StatelessWidget {
             value: FirebaseAuth.instance.onAuthStateChanged),
       ],
       child: MaterialApp(
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          EasyLocalization.of(context).delegate,
+        ],
+        supportedLocales: EasyLocalization.of(context).supportedLocales,
+        locale: EasyLocalization.of(context).locale,
         onGenerateRoute: _routes(),
         home: _getLandingPage(),
         theme: _theme(),

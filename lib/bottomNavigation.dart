@@ -1,8 +1,10 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import './screens/favourite/favourite.dart';
 import './screens/timetable/timetable.dart';
 import './screens/home/home.dart';
 import './screens/profile/profile.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BottomNavigationBarController extends StatefulWidget {
   @override
@@ -51,9 +53,23 @@ class _BottomNavigationBarControllerState
         ],
       );
 
+  switchLanguage(Locale locale) {
+    EasyLocalization.of(context).locale = locale;
+  }
+
   @override
   Widget build(BuildContext context) {
+    log(EasyLocalization.of(context).locale.toString(), name: this.toString());
     return Scaffold(
+      // appBar: AppBar(
+      //   title: Text("title").tr(args: ['jj']),
+      //   leading: IconButton(
+      //     icon: Icon(Icons.arrow_back, color: Colors.white),
+      //     onPressed: () {
+      //       switchLanguage(Locale("zh", "CN"));
+      //     },
+      //   ),
+      // ),
       bottomNavigationBar: _bottomNavigationBar(_selectedIndex),
       body: PageStorage(
         child: pages[_selectedIndex],
