@@ -47,14 +47,14 @@ class Profile extends StatelessWidget {
               disabledTextColor: Colors.black,
               padding: EdgeInsets.all(8.0),
               splashColor: Colors.blueAccent,
-              onPressed: () => _onInfoTap(context, user.uid),
+              onPressed: () => Navigator.pushNamed(context, ProfileInfoRoute),
               child: Text('Info'))
         ],
       ),
     ));
   }
 
-  _onInfoTap(BuildContext context, String id) {
-    Navigator.pushNamed(context, ProfileInfoRoute);
-  }
+  // _onInfoTap(BuildContext context, String id) {
+  //   Navigator.pushNamed(context, ProfileInfoRoute);
+  // }
 }

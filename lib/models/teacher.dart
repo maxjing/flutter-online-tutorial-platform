@@ -3,27 +3,48 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Teacher {
   final String id;
   final String firstName;
+  final String middleName;
   final String lastName;
   final int age;
-  final int clicks;
-  final String description;
+  final String gender;
+  final String introduction;
+  final String major;
+  final String occupation;
+  final String organization;
+  final bool teachOnline;
+  final String highlight;
   final String icon;
+  final int clicks;
 
   Teacher(
       {this.id,
       this.firstName,
+      this.middleName,
       this.lastName,
       this.age,
-      this.description,
+      this.gender,
+      this.introduction,
+      this.major,
+      this.occupation,
+      this.organization,
+      this.teachOnline,
+      this.highlight,
       this.icon,
       this.clicks});
 
   factory Teacher.fromMap(Map data) {
     return Teacher(
         firstName: data['firstName'] ?? '',
+        middleName: data['middleName'] ?? '',
         lastName: data['lastName'] ?? '',
         age: data['age'] ?? '',
-        description: data['description'] ?? '',
+        gender: data['gender'] ?? '',
+        introduction: data['introduction'] ?? '',
+        major: data['major'] ?? '',
+        occupation: data['occupation'] ?? '',
+        organization: data['organization'] ?? '',
+        teachOnline: data['teachOnline'] ?? false,
+        highlight: data['highlight'] ?? '',
         icon: data['icon'] ?? '',
         clicks: data['clicks'] ?? 0);
   }
@@ -34,9 +55,15 @@ class Teacher {
     return Teacher(
         id: doc.documentID,
         firstName: data['firstName'] ?? '',
+        middleName: data['middleName'] ?? '',
         lastName: data['lastName'] ?? '',
         age: data['age'] ?? '',
-        description: data['description'] ?? '',
+        gender: data['gender'] ?? '',
+        introduction: data['introduction'] ?? '',
+        major: data['major'] ?? '',
+        occupation: data['occupation'] ?? '',
+        organization: data['organization'] ?? '',
+        teachOnline: data['teachOnline'] ?? false,
         icon: data['icon'] ?? '',
         clicks: data['clicks'] ?? 0);
   }

@@ -7,6 +7,7 @@ const BodyTextSize = 14.0;
 const String FontNameDefault = 'Roboto';
 
 const HintColor = Color.fromRGBO(255, 255, 255, 0.3);
+const TextFieldBGColor = Color.fromRGBO(255, 255, 255, 0.71);
 
 const ThemeColor = const Color(0xfff08580);
 const ThemeLightColor = const Color(0xfffbbebb);
@@ -43,7 +44,7 @@ const AppBarTextStyle = TextStyle(
 const BodyBoldText = TextStyle(
   fontFamily: FontNameDefault,
   fontWeight: FontWeight.w500,
-  fontSize: BodyTextSize,
+  fontSize: 16,
   color: Colors.black,
 );
 

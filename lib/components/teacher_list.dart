@@ -46,7 +46,7 @@ class _TeachersListState extends State<TeachersList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TeachesBanners(),
-                            Text(teachers[index].description)
+                            Text(teachers[index].introduction)
                           ]),
                     ),
                     trailing: widget.trail,
