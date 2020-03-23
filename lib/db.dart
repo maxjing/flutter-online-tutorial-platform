@@ -45,6 +45,29 @@ class DatabaseService {
 
   Future<void> createTeacher(
     String userId,
+    Map map,
+  ) {
+    return _db.collection('teachers').document(userId).setData({
+      'firstName': map['firstName'],
+      'middleName': map['middleName'],
+      'lastName': map['lastName'],
+      'age': map['age'],
+      // 'occupation': occupation,
+      // 'organization': organization,
+      // 'major': major,
+      // 'highlight': highlight,
+      // 'introduction': introduction,
+      'gender': 'F',
+      'teachOnline': true,
+      'areas': ['Burnaby', 'Richmond'],
+      'certificate': ['bcc', 'caa-1'],
+      'icon':
+          'https://firebasestorage.googleapis.com/v0/b/airtnl-6c400.appspot.com/o/userIcons%2FuserIcon-default.jpeg?alt=media&token=81fc6db3-538b-4868-a2c8-abe2f41ecd03'
+    });
+  }
+
+  Future<void> createTeacher2(
+    String userId,
     String firstName,
     String middleName,
     String lastName,

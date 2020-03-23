@@ -35,10 +35,13 @@ dependencies:
   firebase_storage: ^3.1.1
   provider: ^4.0.4
   intl_phone_number_input: ^0.3.0
+  flutter_form_builder: ^3.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+dependency_overrides:
+  intl: ^0.16.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

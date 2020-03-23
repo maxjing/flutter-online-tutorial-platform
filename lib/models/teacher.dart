@@ -7,12 +7,13 @@ class Teacher {
   final String lastName;
   final int age;
   final String gender;
-  final String introduction;
-  final String major;
   final String occupation;
   final String organization;
+  final String major;
+  final List<dynamic> areas;
   final bool teachOnline;
   final String highlight;
+  final String introduction;
   final String icon;
   final int clicks;
 
@@ -23,12 +24,13 @@ class Teacher {
       this.lastName,
       this.age,
       this.gender,
-      this.introduction,
-      this.major,
       this.occupation,
       this.organization,
+      this.major,
+      this.areas,
       this.teachOnline,
       this.highlight,
+      this.introduction,
       this.icon,
       this.clicks});
 
@@ -39,12 +41,13 @@ class Teacher {
         lastName: data['lastName'] ?? '',
         age: data['age'] ?? '',
         gender: data['gender'] ?? '',
-        introduction: data['introduction'] ?? '',
-        major: data['major'] ?? '',
         occupation: data['occupation'] ?? '',
         organization: data['organization'] ?? '',
+        major: data['major'] ?? '',
+        areas: data['areas'] ?? '',
         teachOnline: data['teachOnline'] ?? false,
         highlight: data['highlight'] ?? '',
+        introduction: data['introduction'] ?? '',
         icon: data['icon'] ?? '',
         clicks: data['clicks'] ?? 0);
   }
@@ -59,11 +62,13 @@ class Teacher {
         lastName: data['lastName'] ?? '',
         age: data['age'] ?? '',
         gender: data['gender'] ?? '',
-        introduction: data['introduction'] ?? '',
-        major: data['major'] ?? '',
         occupation: data['occupation'] ?? '',
         organization: data['organization'] ?? '',
+        major: data['major'] ?? '',
+        areas: data['areas'] ?? '',
         teachOnline: data['teachOnline'] ?? false,
+        highlight: data['highlight'] ?? '',
+        introduction: data['introduction'] ?? '',
         icon: data['icon'] ?? '',
         clicks: data['clicks'] ?? 0);
   }

@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+
 import '../../helper.dart';
 import '../../style.dart';
 import '../../db.dart';
@@ -19,7 +21,6 @@ class Info extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 20.0),
               Text(
                 'Basic Information',
                 style: TextStyle(
@@ -50,65 +51,39 @@ class Info extends StatelessWidget {
     final db = DatabaseService();
     var user = Provider.of<FirebaseUser>(context);
     return Scaffold(
-      body: ListView(children: [
-        header,
-        StreamProvider<Teacher>.value(
-            value: db.streamTeacher('pDBLYyP1v6S60EpRo6dOkivIUtx1'),
-            child: InformationForm()),
-      ]),
+      appBar: AppBar(
+        backgroundColor: TeacherLoginButtonColor,
+        elevation: 0.0,
+      ),
+      body: SingleChildScrollView(
+          child: Column(
+        children: <Widget>[
+          header,
+          StreamProvider<Teacher>.value(
+              value: db.streamTeacher('pDBLYyP1v6S60EpRo6dOkivIUtx1'),
+              child: InformationForm()),
+        ],
+      )),
     );
   }
 }
 
 class InformationForm extends StatefulWidget {
+  // final String _teacherId;
+  // InformationForm(this._teacherId);
   @override
   _InformationFormState createState() => _InformationFormState();
 }
 
 class _InformationFormState extends State<InformationForm> {
-  final _formKey = GlobalKey<FormState>();
-  final firstName = TextEditingController();
-  final middleName = TextEditingController();
-  final lastName = TextEditingController();
-  final age = TextEditingController();
+  final db = DatabaseService();
 
-  // final String gender;
-  final introduction = TextEditingController();
-  final major = TextEditingController();
-  final occupation = TextEditingController();
-  final organization = TextEditingController();
-  final highlight = TextEditingController();
-  // final  teachOnline;
-  // final String icon;
-  // final int clicks;
-
-  // @override
-  // void dispose() {
-  //   // Clean up the controller when the widget is removed from the
-  //   // widget tree.
-  //   firstName.dispose();
-  //   lastName.dispose();
-  //   age.dispose();
-  //   description.dispose();
-  //   super.dispose();
-  // }
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
     final db = DatabaseService();
     var teacher = Provider.of<Teacher>(context);
-    bool hasInfo = teacher != null;
-    if (hasInfo) {
-      firstName.text = teacher.firstName;
-      lastName.text = teacher.lastName;
-      age.text = teacher.age.toString();
-      middleName.text = teacher.middleName;
-      introduction.text = teacher.introduction;
-      major.text = teacher.major;
-      occupation.text = teacher.occupation;
-      highlight.text = teacher.highlight;
-      organization.text = teacher.organization;
-    }
     return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -117,9 +92,24 @@ class _InformationFormState extends State<InformationForm> {
           ),
         ),
         child: Container(
-            padding: const EdgeInsets.all(30.0),
-            child: Form(
-              key: _formKey,
+            padding: const EdgeInsets.all(25.0),
+            child: FormBuilder(
+              key: _fbKey,
+              autovalidate: true,
+              initialValue: {
+                'firstName': teacher.firstName,
+                'middleName': teacher.middleName,
+                'lastName': teacher.lastName,
+                'age': teacher.age.toString(),
+                'gender': "Female",
+                'occupation': "Student",
+                'organization': teacher.organization,
+                'areas': teacher.areas,
+                'major': teacher.major,
+                'highlight': teacher.highlight,
+                'introduction': teacher.introduction,
+              },
+              readOnly: false,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -127,113 +117,94 @@ class _InformationFormState extends State<InformationForm> {
                   Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Name',
+                        'About me',
                         style: BodyBoldText,
                       )),
                   SizedBox(height: 10.0),
-                  TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter your first name';
-                      }
-                    },
-                    controller: firstName,
+                  FormBuilderTextField(
+                    attribute: "firstName",
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
+                      labelText: "First Name",
+                      labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
-                      hintText: "FIRST",
-                      hintStyle: TextStyle(
-                        color: InfoTextfieldColor,
-                        fontSize: 13.0,
-                      ),
                     ),
-                    style: TextStyle(
-                      color: InfoTextfieldColor,
-                    ),
+                    onChanged: _onChanged,
+                    validators: [
+                      FormBuilderValidators.required(),
+                    ],
+                    keyboardType: TextInputType.text,
                   ),
                   SizedBox(height: 10.0),
-                  TextFormField(
-                    controller: lastName,
+                  FormBuilderTextField(
+                    attribute: "middleName",
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
+                      labelText: "Middle Name",
+                      labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
-                      hintText: "LAST",
-                      hintStyle: TextStyle(
-                        color: InfoTextfieldColor,
-                        fontSize: 13.0,
-                      ),
                     ),
-                    style: TextStyle(
-                      color: InfoTextfieldColor,
-                    ),
+                    onChanged: _onChanged,
+                    validators: [
+                      FormBuilderValidators.required(),
+                    ],
+                    keyboardType: TextInputType.text,
                   ),
                   SizedBox(height: 10.0),
-                  TextFormField(
-                    controller: middleName,
+                  FormBuilderTextField(
+                    attribute: "lastName",
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
+                      labelText: "Last Name",
+                      labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
-                      hintText: "MIDDLE",
-                      hintStyle: TextStyle(
-                        color: InfoTextfieldColor,
-                        fontSize: 13.0,
-                      ),
                     ),
-                    style: TextStyle(
-                      color: InfoTextfieldColor,
-                    ),
+                    onChanged: _onChanged,
+                    validators: [
+                      FormBuilderValidators.required(),
+                    ],
+                    keyboardType: TextInputType.text,
                   ),
                   SizedBox(height: 10.0),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    width: getScreenWidth() * 0.2,
-                    child: TextFormField(
-                      controller: age,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 10),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 0,
-                            style: BorderStyle.none,
-                          ),
-                        ),
-                        filled: true,
-                        fillColor: TextFieldBGColor,
-                        hintText: "AGE",
-                        hintStyle: TextStyle(
-                          color: InfoTextfieldColor,
-                          fontSize: 13.0,
-                        ),
-                      ),
-                      style: TextStyle(
-                        color: InfoTextfieldColor,
-                      ),
+                  FormBuilderTextField(
+                    attribute: "age",
+                    decoration: InputDecoration(
+                      labelText: "age",
+                      labelStyle: TextStyle(color: Colors.grey),
+                      filled: true,
+                      fillColor: TextFieldBGColor,
                     ),
+                    onChanged: _onChanged,
+                    valueTransformer: (text) => num.tryParse(text),
+                    validators: [
+                      FormBuilderValidators.required(),
+                      FormBuilderValidators.numeric(),
+                      FormBuilderValidators.max(90),
+                      FormBuilderValidators.min(1)
+                    ],
+                    keyboardType: TextInputType.number,
+                  ),
+                  SizedBox(height: 10.0),
+                  FormBuilderDropdown(
+                    attribute: "gender",
+                    decoration: InputDecoration(
+                      labelText: "Gender",
+                      labelStyle: TextStyle(color: Colors.grey),
+                    ),
+                    // initialValue: 'Male',
+                    onChanged: _onChanged,
+                    hint: Text(
+                      'Select Gender',
+                      style: TextStyle(color: Colors.blueGrey),
+                    ),
+
+                    validators: [FormBuilderValidators.required()],
+                    items: ['Male', 'Female', 'Other']
+                        .map((gender) => DropdownMenuItem(
+                              value: gender,
+                              child: Text('$gender'),
+                            ))
+                        .toList(),
                   ),
                   SizedBox(height: 20.0),
                   Container(
@@ -242,52 +213,26 @@ class _InformationFormState extends State<InformationForm> {
                         'Occupation',
                         style: BodyBoldText,
                       )),
-                  Container(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      FlatButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        color: TextFieldBGColor,
-                        textColor: Colors.black,
-                        padding: EdgeInsets.all(8.0),
-                        onPressed: () {},
-                        child: Text(
-                          "Student",
-                          style: TextStyle(fontSize: 13.0),
-                        ),
-                      ),
-                      FlatButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        color: TextFieldBGColor,
-                        textColor: Colors.black,
-                        padding: EdgeInsets.all(8.0),
-                        onPressed: () {
-                          /*...*/
-                        },
-                        child: Text(
-                          "Working",
-                          style: TextStyle(fontSize: 13.0),
-                        ),
-                      ),
-                      FlatButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        color: TextFieldBGColor,
-                        textColor: Colors.black,
-                        padding: EdgeInsets.all(8.0),
-                        onPressed: () {
-                          /*...*/
-                        },
-                        child: Text(
-                          "Freelancer",
-                          style: TextStyle(fontSize: 13.0),
-                        ),
-                      )
-                    ],
-                  )),
+                  FormBuilderDropdown(
+                    attribute: "occupation",
+                    decoration: InputDecoration(
+                      labelText: "Occupation",
+                      labelStyle: TextStyle(color: Colors.grey),
+                    ),
+                    // initialValue: 'Male',
+                    onChanged: _onChanged,
+                    hint: Text(
+                      'Select Occupation',
+                      style: TextStyle(color: Colors.blueGrey),
+                    ),
+                    validators: [FormBuilderValidators.required()],
+                    items: ['Freelancer', 'Working', 'Student']
+                        .map((occupation) => DropdownMenuItem(
+                              value: occupation,
+                              child: Text('$occupation'),
+                            ))
+                        .toList(),
+                  ),
                   SizedBox(height: 20.0),
                   Container(
                       alignment: Alignment.topLeft,
@@ -296,52 +241,52 @@ class _InformationFormState extends State<InformationForm> {
                         style: BodyBoldText,
                       )),
                   SizedBox(height: 10.0),
-                  TextFormField(
-                    controller: organization,
+                  FormBuilderTextField(
+                    attribute: "organization",
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
+                      labelText: "Organization Name",
+                      labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
-                      hintText: "Name of the organization",
-                      hintStyle: TextStyle(
-                        color: InfoTextfieldColor,
-                        fontSize: 13.0,
-                      ),
                     ),
-                    style: TextStyle(
-                      color: InfoTextfieldColor,
+                    onChanged: _onChanged,
+                    validators: [
+                      FormBuilderValidators.required(),
+                    ],
+                    keyboardType: TextInputType.text,
+                  ),
+                  SizedBox(height: 10.0),
+                  FormBuilderTextField(
+                    attribute: "major",
+                    decoration: InputDecoration(
+                      labelText: "Major (if applicable)",
+                      labelStyle: TextStyle(color: Colors.grey),
+                      filled: true,
+                      fillColor: TextFieldBGColor,
                     ),
+                    onChanged: _onChanged,
+                    keyboardType: TextInputType.text,
                   ),
                   SizedBox(height: 20.0),
-                  TextFormField(
-                    controller: major,
+                  Container(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Areas',
+                        style: BodyBoldText,
+                      )),
+                  SizedBox(height: 10.0),
+                  FormBuilderCheckboxList(
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: TextFieldBGColor,
-                      hintText: "Major(if applicable)",
-                      hintStyle: TextStyle(
-                        color: InfoTextfieldColor,
-                        fontSize: 13.0,
-                      ),
+                      labelText: "Cities you are able to teach",
+                      labelStyle: TextStyle(color: Colors.grey),
                     ),
-                    style: TextStyle(
-                      color: InfoTextfieldColor,
-                    ),
+                    attribute: "areas",
+                    options: [
+                      FormBuilderFieldOption(value: 'Vancouver'),
+                      FormBuilderFieldOption(value: 'Burnaby'),
+                      FormBuilderFieldOption(value: 'Richmond'),
+                    ],
+                    onChanged: _onChanged,
                   ),
                   SizedBox(height: 20.0),
                   Container(
@@ -351,27 +296,20 @@ class _InformationFormState extends State<InformationForm> {
                         style: BodyBoldText,
                       )),
                   SizedBox(height: 10.0),
-                  TextField(
-                    controller: highlight,
-                    maxLines: 5,
+                  FormBuilderTextField(
+                    attribute: "highlight",
+                    maxLines: 2,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
+                      labelText: "Enter your short description here",
+                      labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
-                      hintText: "Enter your short description here",
-                      hintStyle: TextStyle(
-                        color: InfoTextfieldColor,
-                        fontSize: 13.0,
-                      ),
                     ),
-                    style: TextStyle(
-                      color: InfoTextfieldColor,
-                    ),
+                    onChanged: _onChanged,
+                    validators: [
+                      FormBuilderValidators.required(),
+                    ],
+                    keyboardType: TextInputType.text,
                   ),
                   SizedBox(height: 20.0),
                   Container(
@@ -381,29 +319,41 @@ class _InformationFormState extends State<InformationForm> {
                         style: BodyBoldText,
                       )),
                   SizedBox(height: 10.0),
-                  TextField(
-                    controller: introduction,
-                    maxLines: 5,
+                  FormBuilderTextField(
+                    attribute: "introduction",
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
+                      labelText: "Enter your introduction here",
+                      labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
-                      hintText: "Introduce yourself",
-                      hintStyle: TextStyle(
-                        color: InfoTextfieldColor,
-                        fontSize: 13.0,
-                      ),
                     ),
-                    style: TextStyle(
-                      color: InfoTextfieldColor,
-                    ),
+                    onChanged: _onChanged,
+                    validators: [
+                      FormBuilderValidators.required(),
+                    ],
+                    keyboardType: TextInputType.text,
                   ),
-                  SizedBox(height: 30.0),
+                  MaterialButton(
+                    color: TextFieldBGColor,
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onPressed: () {
+                      _fbKey.currentState.save();
+                      if (_fbKey.currentState.validate()) {
+                        db.createTeacher('pDBLYyP1v6S60EpRo6dOkivIUtx1',
+                            _fbKey.currentState.value);
+                        print(_fbKey.currentState.value.runtimeType);
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text('Submitting')));
+                      } else {
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                            content:
+                                Text('Please complete the form properly')));
+                      }
+                    },
+                  ),
                   Container(
                       child: Center(
                     child: FlatButton(
@@ -413,23 +363,24 @@ class _InformationFormState extends State<InformationForm> {
                       textColor: Colors.black,
                       padding: EdgeInsets.all(8.0),
                       onPressed: () => {
-                        if (_formKey.currentState.validate())
-                          {
-                            db.createTeacher(
-                              'pDBLYyP1v6S60EpRo6dOkivIUtx1',
-                              firstName.text,
-                              middleName.text,
-                              lastName.text,
-                              int.parse(age.text),
-                              occupation.text,
-                              organization.text,
-                              major.text,
-                              highlight.text,
-                              introduction.text,
-                            ),
-                            Scaffold.of(context).showSnackBar(
-                                SnackBar(content: Text('Processing Data')))
-                          }
+                        _fbKey.currentState.reset()
+                        // if (_formKey——.currentState.validate())
+                        //   {
+                        //     db.createTeacher(
+                        //       'pDBLYyP1v6S60EpRo6dOkivIUtx1',
+                        //       firstName.text,
+                        //       middleName.text,
+                        //       lastName.text,
+                        //       int.parse(age.text),
+                        //       occupation.text,
+                        //       organization.text,
+                        //       major.text,
+                        //       highlight.text,
+                        //       introduction.text,
+                        //     ),
+                        //     Scaffold.of(context).showSnackBar(
+                        //         SnackBar(content: Text('Processing Data')))
+                        //   }
                       },
                       child: Text(
                         "Submit",

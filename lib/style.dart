@@ -8,6 +8,7 @@ const String FontNameDefault = 'Roboto';
 
 const HintColor = Color.fromRGBO(255, 255, 255, 0.3);
 const TextFieldBGColor = Color.fromRGBO(255, 255, 255, 0.71);
+const ButtonPressedBGColor = Color.fromRGBO(166, 166, 166, 0.66);
 
 const ThemeColor = const Color(0xfff08580);
 const ThemeLightColor = const Color(0xfffbbebb);
@@ -44,7 +45,7 @@ const AppBarTextStyle = TextStyle(
 const BodyBoldText = TextStyle(
   fontFamily: FontNameDefault,
   fontWeight: FontWeight.w500,
-  fontSize: 16,
+  fontSize: 18,
   color: Colors.black,
 );
 
