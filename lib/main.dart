@@ -18,10 +18,15 @@ import 'screens/signup/teacherSignup.dart';
 import 'screens/signup/studentSignup.dart';
 import 'screens/profile/info.dart';
 import 'screens/courses/courses.dart';
+import 'screens/profile/language.dart';
 
 void main() => runApp(EasyLocalization(
     child: App(),
-    supportedLocales: [Locale('en', 'US'), Locale('zh', 'CN')],
+    supportedLocales: [
+      Locale('en', 'US'),
+      Locale('zh', 'CN'),
+      Locale('zh', 'HK')
+    ],
     path: 'assets/langs'));
 
 class App extends StatelessWidget {
@@ -103,6 +108,9 @@ class App extends StatelessWidget {
           break;
         case CoursesRoute:
           screen = Courses(arguments['id']);
+          break;
+        case LanguageRoute:
+          screen = Language();
           break;
 
         default:

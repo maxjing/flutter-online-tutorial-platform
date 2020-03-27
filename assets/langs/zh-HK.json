@@ -1,0 +1,22 @@
+{
+  "page": {
+    "home": "主頁",
+    "favourite": "我的最愛",
+    "timetable": "時間表",
+    "profile": "賬戶"
+  },
+  "info": {
+    "title": "我的信息",
+    "subtitle": "完整的信息能讓你更快的開始上課",
+    "about_me": "關於我",
+    "firstName": "名",
+    "middleName": "中間名",
+    "lastName": "姓",
+    "age": "年齡"
+  },
+  "button": {
+    "reset": "重置",
+    "switch_language": "切換語言",
+    "save": "保存"
+  }
+}

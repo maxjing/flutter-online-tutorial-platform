@@ -1,5 +1,22 @@
 {
-  "title": "{}, 欢迎来到 AirTnL",
-  "content": "AirTnL - 在线辅导与学习",
-  "buttonText": "点击"
+  "page": {
+    "home": "主页",
+    "favourite": "我的最爱",
+    "timetable": "时间表",
+    "profile": "账户"
+  },
+  "info": {
+    "title": "我的信息",
+    "subtitle": "完整的信息能让你更快的开始上课",
+    "about_me": "关于我",
+    "firstName": "名",
+    "middleName": "中间名",
+    "lastName": "姓",
+    "age": "年龄"
+  },
+  "button": {
+    "reset": "重置",
+    "switch_language": "切换语言",
+    "save": "保存"
+  }
 }

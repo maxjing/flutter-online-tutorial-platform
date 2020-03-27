@@ -1,5 +1,22 @@
 {
-  "title": "{}, Welcome to AirTnL",
-  "content": "AirTnL - Air Teacher and Learn",
-  "buttonText": "CLICK ME"
+  "page": {
+    "home": "Home",
+    "favourite": "Favourite",
+    "timetable": "Timetable",
+    "profile": "Profile"
+  },
+  "info": {
+    "title": "Basic Information",
+    "subtitle": "TO START TEACHING FILL IN THE FORM BELOW",
+    "about_me": "About Me",
+    "firstName": "First Name",
+    "middleName": "Middle Name",
+    "lastName": "Last Name",
+    "age": "Age"
+  },
+  "button": {
+    "reset": "Reset",
+    "switch_language": "Switch Language",
+    "save": "Save"
+  }
 }

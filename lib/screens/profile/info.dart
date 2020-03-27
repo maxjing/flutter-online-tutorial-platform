@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer';
-import 'dart:convert';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../../helper.dart';
 import '../../style.dart';
 import '../../db.dart';
@@ -25,7 +23,7 @@ class Info extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                'Basic Information',
+                tr('info.title'),
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 24,
@@ -33,19 +31,19 @@ class Info extends StatelessWidget {
               ),
               SizedBox(height: 20.0),
               Text(
-                'TO START TEACHING',
+                tr('info.subtitle'),
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.w500),
               ),
-              Text(
-                'FILL IN THE FORM BELOW',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
-              ),
+              // Text(
+              //   'FILL IN THE FORM BELOW',
+              //   style: TextStyle(
+              //       color: Colors.white,
+              //       fontSize: 14,
+              //       fontWeight: FontWeight.w500),
+              // ),
             ],
           )));
 
@@ -113,31 +111,9 @@ class _InformationFormState extends State<InformationForm> {
                           .updateData({'certificates': _certificates}),
                       _newCertificateController.clear()
                     }),
-            // Row(
-            //   children: <Widget>[
-            // IconButton(
-            //     icon: Icon(
-            //       Icons.add,
-            //     ),
-            //     onPressed: () => _removeCertificate(keyValue - 1)),
-            //     // IconButton(
-            //     //     icon: Icon(
-            //     //       Icons.delete,
-            //     //     ),
-            //     //     onPressed: () => _removeCertificate(keyValue - 1)),
-            //   ],
-            // )
           ),
         ),
       );
-  }
-
-  void _removeCertificate(int index) {
-    log(index.toString());
-    setState(() {
-      _newCertificates.removeAt(index);
-      --_cLen;
-    });
   }
 
   @override
@@ -147,6 +123,7 @@ class _InformationFormState extends State<InformationForm> {
     var teacher = Provider.of<Teacher>(context);
     bool hasInfo = teacher != null;
 
+    //certificates is not empty
     if (hasInfo && teacher.certificates != []) {
       setState(() {
         _certificates = new List.from(teacher.certificates, growable: true);
@@ -192,7 +169,7 @@ class _InformationFormState extends State<InformationForm> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        'About me',
+                        tr('info.about_me'),
                         style: BodyBoldText,
                       ),
                       MaterialButton(
@@ -203,7 +180,7 @@ class _InformationFormState extends State<InformationForm> {
                         padding: EdgeInsets.all(8.0),
                         onPressed: () => {_fbKey.currentState.reset()},
                         child: Text(
-                          "Reset",
+                          tr('button.reset'),
                           style: TextStyle(fontSize: 13.0),
                         ),
                       ),
@@ -213,7 +190,7 @@ class _InformationFormState extends State<InformationForm> {
                   FormBuilderTextField(
                     attribute: "firstName",
                     decoration: InputDecoration(
-                      labelText: "First Name",
+                      labelText: tr('info.firstName'),
                       labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
@@ -228,7 +205,7 @@ class _InformationFormState extends State<InformationForm> {
                   FormBuilderTextField(
                     attribute: "middleName",
                     decoration: InputDecoration(
-                      labelText: "Middle Name",
+                      labelText: tr('info.middleName'),
                       labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
@@ -243,7 +220,7 @@ class _InformationFormState extends State<InformationForm> {
                   FormBuilderTextField(
                     attribute: "lastName",
                     decoration: InputDecoration(
-                      labelText: "Last Name",
+                      labelText: tr('info.lastName'),
                       labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
@@ -258,7 +235,7 @@ class _InformationFormState extends State<InformationForm> {
                   FormBuilderTextField(
                     attribute: "age",
                     decoration: InputDecoration(
-                      labelText: "age",
+                      labelText: tr('info.age'),
                       labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,

@@ -11,3 +11,4 @@ const TeacherSignupRoute = '/signup/teacher';
 const StudentSignupRoute = '/signup/student';
 const ProfileInfoRoute = '/profile/info';
 const CoursesRoute = '/courses';
+const LanguageRoute = '/profile/language';

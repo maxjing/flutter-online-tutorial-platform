@@ -38,18 +38,21 @@ class _BottomNavigationBarControllerState
         iconSize: 30.0,
         onTap: (int index) => setState(() => _selectedIndex = index),
         currentIndex: selectedIndex,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home), title: Text('page.home').tr()),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.favorite_border,
             ),
-            title: Text('Favourite'),
+            title: Text('page.favourite').tr(),
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today), title: Text('Timetable')),
+              icon: Icon(Icons.calendar_today),
+              title: Text('page.timetable').tr()),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline), title: Text('Profile')),
+              icon: Icon(Icons.person_outline),
+              title: Text('page.profile').tr()),
         ],
       );
 
