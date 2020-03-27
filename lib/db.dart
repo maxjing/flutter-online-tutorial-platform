@@ -24,7 +24,7 @@ class DatabaseService {
         .collection('teachers')
         .document(id)
         .snapshots()
-        .map((snap) => Teacher.fromMap(snap.data));
+        .map((snap) => Teacher.fromFirestore(snap));
   }
 
 /* teacher subcollection teaches */
@@ -52,15 +52,15 @@ class DatabaseService {
       'middleName': map['middleName'],
       'lastName': map['lastName'],
       'age': map['age'],
-      // 'occupation': occupation,
-      // 'organization': organization,
-      // 'major': major,
-      // 'highlight': highlight,
-      // 'introduction': introduction,
-      'gender': 'F',
-      'teachOnline': true,
-      'areas': ['Burnaby', 'Richmond'],
-      'certificate': ['bcc', 'caa-1'],
+      'gender': map['gender'],
+      'occupation': map['occupation'],
+      'organization': map['organization'],
+      'major': map['major'],
+      'areas': map['areas'],
+      'teachOnline': map['teachOnline'],
+      'highlight': map['highlight'],
+      'introduction': map['introduction'],
+      'certificates': map['certificates'],
       'icon':
           'https://firebasestorage.googleapis.com/v0/b/airtnl-6c400.appspot.com/o/userIcons%2FuserIcon-default.jpeg?alt=media&token=81fc6db3-538b-4868-a2c8-abe2f41ecd03'
     });

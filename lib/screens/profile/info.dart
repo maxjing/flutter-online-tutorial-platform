@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
+import 'dart:convert';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -60,8 +63,8 @@ class Info extends StatelessWidget {
         children: <Widget>[
           header,
           StreamProvider<Teacher>.value(
-              value: db.streamTeacher('pDBLYyP1v6S60EpRo6dOkivIUtx1'),
-              child: InformationForm()),
+              value: db.streamTeacher(user.uid),
+              child: InformationForm(user.uid)),
         ],
       )),
     );
@@ -69,26 +72,92 @@ class Info extends StatelessWidget {
 }
 
 class InformationForm extends StatefulWidget {
-  // final String _teacherId;
-  // InformationForm(this._teacherId);
   @override
   _InformationFormState createState() => _InformationFormState();
+  final String uid;
+  InformationForm(this.uid);
 }
 
 class _InformationFormState extends State<InformationForm> {
   final db = DatabaseService();
-
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+
+  ValueChanged _onChanged = (val) => {};
+  List<dynamic> _certificates = [];
+  final _newCertificateController = TextEditingController();
+  int _cLen = 0;
+
+  var _newCertificates = List<Widget>();
+  void _addCertificate() {
+    setState(() => ++_cLen);
+    if (_cLen > 1) {
+      return;
+    }
+
+    _newCertificates = List.from(_newCertificates)
+      ..add(
+        Card(
+          child: ListTile(
+            title: TextField(
+              controller: _newCertificateController,
+            ),
+            trailing: IconButton(
+                icon: Icon(
+                  Icons.add,
+                ),
+                onPressed: () => {
+                      _certificates.add(_newCertificateController.text),
+                      Firestore.instance
+                          .collection('teachers')
+                          .document(widget.uid)
+                          .updateData({'certificates': _certificates}),
+                      _newCertificateController.clear()
+                    }),
+            // Row(
+            //   children: <Widget>[
+            // IconButton(
+            //     icon: Icon(
+            //       Icons.add,
+            //     ),
+            //     onPressed: () => _removeCertificate(keyValue - 1)),
+            //     // IconButton(
+            //     //     icon: Icon(
+            //     //       Icons.delete,
+            //     //     ),
+            //     //     onPressed: () => _removeCertificate(keyValue - 1)),
+            //   ],
+            // )
+          ),
+        ),
+      );
+  }
+
+  void _removeCertificate(int index) {
+    log(index.toString());
+    setState(() {
+      _newCertificates.removeAt(index);
+      --_cLen;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final db = DatabaseService();
+
     var teacher = Provider.of<Teacher>(context);
+    bool hasInfo = teacher != null;
+
+    if (hasInfo && teacher.certificates != []) {
+      setState(() {
+        _certificates = new List.from(teacher.certificates, growable: true);
+      });
+    }
+
     return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/bg_info_teacher.png"),
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
         ),
         child: Container(
@@ -97,29 +166,49 @@ class _InformationFormState extends State<InformationForm> {
               key: _fbKey,
               autovalidate: true,
               initialValue: {
-                'firstName': teacher.firstName,
-                'middleName': teacher.middleName,
-                'lastName': teacher.lastName,
-                'age': teacher.age.toString(),
-                'gender': "Female",
-                'occupation': "Student",
-                'organization': teacher.organization,
-                'areas': teacher.areas,
-                'major': teacher.major,
-                'highlight': teacher.highlight,
-                'introduction': teacher.introduction,
+                'firstName': hasInfo ? teacher.firstName : "",
+                'middleName': hasInfo ? teacher.middleName : "",
+                'lastName': hasInfo ? teacher.lastName : "",
+                'age': hasInfo ? teacher.age.toString() : "",
+                'gender': hasInfo ? teacher.gender : "",
+                'occupation': hasInfo ? teacher.occupation : "",
+                'organization': hasInfo ? teacher.organization : "",
+                'areas':
+                    hasInfo ? new List.from(teacher.areas, growable: true) : [],
+                'teachOnline': hasInfo ? teacher.teachOnline : false,
+                'major': hasInfo ? teacher.major : "",
+                'highlight': hasInfo ? teacher.highlight : "",
+                'introduction': hasInfo ? teacher.introduction : "",
+                'certificates': hasInfo && teacher.certificates != []
+                    ? new List.from(teacher.certificates, growable: true)
+                    : [],
               },
               readOnly: false,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                      alignment: Alignment.topLeft,
-                      child: Text(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
                         'About me',
                         style: BodyBoldText,
-                      )),
+                      ),
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        padding: EdgeInsets.all(8.0),
+                        onPressed: () => {_fbKey.currentState.reset()},
+                        child: Text(
+                          "Reset",
+                          style: TextStyle(fontSize: 13.0),
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 10.0),
                   FormBuilderTextField(
                     attribute: "firstName",
@@ -146,7 +235,7 @@ class _InformationFormState extends State<InformationForm> {
                     ),
                     onChanged: _onChanged,
                     validators: [
-                      FormBuilderValidators.required(),
+                      // FormBuilderValidators.required(),
                     ],
                     keyboardType: TextInputType.text,
                   ),
@@ -187,17 +276,16 @@ class _InformationFormState extends State<InformationForm> {
                   SizedBox(height: 10.0),
                   FormBuilderDropdown(
                     attribute: "gender",
+                    initialValue: 'Male',
                     decoration: InputDecoration(
                       labelText: "Gender",
                       labelStyle: TextStyle(color: Colors.grey),
                     ),
-                    // initialValue: 'Male',
                     onChanged: _onChanged,
                     hint: Text(
                       'Select Gender',
                       style: TextStyle(color: Colors.blueGrey),
                     ),
-
                     validators: [FormBuilderValidators.required()],
                     items: ['Male', 'Female', 'Other']
                         .map((gender) => DropdownMenuItem(
@@ -215,6 +303,7 @@ class _InformationFormState extends State<InformationForm> {
                       )),
                   FormBuilderDropdown(
                     attribute: "occupation",
+                    initialValue: 'Working',
                     decoration: InputDecoration(
                       labelText: "Occupation",
                       labelStyle: TextStyle(color: Colors.grey),
@@ -277,7 +366,7 @@ class _InformationFormState extends State<InformationForm> {
                   SizedBox(height: 10.0),
                   FormBuilderCheckboxList(
                     decoration: InputDecoration(
-                      labelText: "Cities you are able to teach",
+                      labelText: "Locations that you are able to teach",
                       labelStyle: TextStyle(color: Colors.grey),
                     ),
                     attribute: "areas",
@@ -286,7 +375,25 @@ class _InformationFormState extends State<InformationForm> {
                       FormBuilderFieldOption(value: 'Burnaby'),
                       FormBuilderFieldOption(value: 'Richmond'),
                     ],
+                    validators: [
+                      FormBuilderValidators.required(),
+                    ],
                     onChanged: _onChanged,
+                  ),
+                  FormBuilderCheckbox(
+                    attribute: 'teachOnline',
+                    onChanged: _onChanged,
+                    leadingInput: true,
+                    label: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Able to teach online? ',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   SizedBox(height: 20.0),
                   Container(
@@ -298,7 +405,7 @@ class _InformationFormState extends State<InformationForm> {
                   SizedBox(height: 10.0),
                   FormBuilderTextField(
                     attribute: "highlight",
-                    maxLines: 2,
+                    maxLines: 1,
                     decoration: InputDecoration(
                       labelText: "Enter your short description here",
                       labelStyle: TextStyle(color: Colors.grey),
@@ -321,6 +428,7 @@ class _InformationFormState extends State<InformationForm> {
                   SizedBox(height: 10.0),
                   FormBuilderTextField(
                     attribute: "introduction",
+                    maxLines: 5,
                     decoration: InputDecoration(
                       labelText: "Enter your introduction here",
                       labelStyle: TextStyle(color: Colors.grey),
@@ -333,59 +441,95 @@ class _InformationFormState extends State<InformationForm> {
                     ],
                     keyboardType: TextInputType.text,
                   ),
-                  MaterialButton(
-                    color: TextFieldBGColor,
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onPressed: () {
-                      _fbKey.currentState.save();
-                      if (_fbKey.currentState.validate()) {
-                        db.createTeacher('pDBLYyP1v6S60EpRo6dOkivIUtx1',
-                            _fbKey.currentState.value);
-                        print(_fbKey.currentState.value.runtimeType);
-                        Scaffold.of(context).showSnackBar(
-                            SnackBar(content: Text('Submitting')));
-                      } else {
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                            content:
-                                Text('Please complete the form properly')));
-                      }
-                    },
+                  // SizedBox(height: 10),
+                  // FlatButton(
+                  //   child: Text('Add another'),
+                  //   onPressed: _addCertificate,
+                  // ),
+                  SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Certificates',
+                        style: BodyBoldText,
+                      ),
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        padding: EdgeInsets.all(8.0),
+                        onPressed: _addCertificate,
+                        child: Icon(
+                          Icons.add,
+                        ),
+                      ),
+                    ],
                   ),
+                  SizedBox(height: 10.0),
+                  // Column(
+                  //   children: <Widget>[
+                  //     if (_fbKey
+                  //         .currentState.value['certificates'].isEmpty) ...[
+                  //       SizedBox(height: 100),
+                  //     ],
+                  //   ],
+                  // ),
+                  if (_certificates != []) ...[
+                    for (var c in teacher.certificates)
+                      Card(
+                        child: ListTile(
+                          title: Text(c.toString()),
+                          trailing: IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                              ),
+                              onPressed: () => {
+                                    _certificates.remove(c),
+                                    Firestore.instance
+                                        .collection('teachers')
+                                        .document(teacher.id)
+                                        .updateData(
+                                            {'certificates': _certificates})
+                                  }),
+                        ),
+                      ),
+                  ],
+
+                  Column(
+                    children: _newCertificates,
+                  ),
+
+                  SizedBox(height: 10),
                   Container(
                       child: Center(
-                    child: FlatButton(
+                    child: MaterialButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0)),
-                      color: TextFieldBGColor,
+                      color: Colors.white,
                       textColor: Colors.black,
                       padding: EdgeInsets.all(8.0),
-                      onPressed: () => {
-                        _fbKey.currentState.reset()
-                        // if (_formKey——.currentState.validate())
-                        //   {
-                        //     db.createTeacher(
-                        //       'pDBLYyP1v6S60EpRo6dOkivIUtx1',
-                        //       firstName.text,
-                        //       middleName.text,
-                        //       lastName.text,
-                        //       int.parse(age.text),
-                        //       occupation.text,
-                        //       organization.text,
-                        //       major.text,
-                        //       highlight.text,
-                        //       introduction.text,
-                        //     ),
-                        //     Scaffold.of(context).showSnackBar(
-                        //         SnackBar(content: Text('Processing Data')))
-                        //   }
-                      },
                       child: Text(
                         "Submit",
                         style: TextStyle(fontSize: 13.0),
                       ),
+                      onPressed: () {
+                        _fbKey.currentState.save();
+                        if (_fbKey.currentState.validate()) {
+                          // log(_fbKey.currentState.value['certificates']
+                          //     .toString());
+                          db.createTeacher(
+                              widget.uid, _fbKey.currentState.value);
+
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text('Submitting')));
+                        } else {
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text('Please complete the form properly')));
+                        }
+                      },
                     ),
                   )),
                 ],

@@ -14,6 +14,7 @@ class Teacher {
   final bool teachOnline;
   final String highlight;
   final String introduction;
+  final List<dynamic> certificates;
   final String icon;
   final int clicks;
 
@@ -31,6 +32,7 @@ class Teacher {
       this.teachOnline,
       this.highlight,
       this.introduction,
+      this.certificates,
       this.icon,
       this.clicks});
 
@@ -48,6 +50,7 @@ class Teacher {
         teachOnline: data['teachOnline'] ?? false,
         highlight: data['highlight'] ?? '',
         introduction: data['introduction'] ?? '',
+        certificates: data['certificates'] ?? [],
         icon: data['icon'] ?? '',
         clicks: data['clicks'] ?? 0);
   }
@@ -56,7 +59,7 @@ class Teacher {
     Map data = doc.data;
 
     return Teacher(
-        id: doc.documentID,
+        id: doc.documentID.toString(),
         firstName: data['firstName'] ?? '',
         middleName: data['middleName'] ?? '',
         lastName: data['lastName'] ?? '',
@@ -65,10 +68,11 @@ class Teacher {
         occupation: data['occupation'] ?? '',
         organization: data['organization'] ?? '',
         major: data['major'] ?? '',
-        areas: data['areas'] ?? '',
+        areas: data['areas'] ?? [],
         teachOnline: data['teachOnline'] ?? false,
         highlight: data['highlight'] ?? '',
         introduction: data['introduction'] ?? '',
+        certificates: data['certificates'] ?? [],
         icon: data['icon'] ?? '',
         clicks: data['clicks'] ?? 0);
   }

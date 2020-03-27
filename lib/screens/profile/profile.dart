@@ -47,8 +47,11 @@ class Profile extends StatelessWidget {
               disabledTextColor: Colors.black,
               padding: EdgeInsets.all(8.0),
               splashColor: Colors.blueAccent,
-              onPressed: () => Navigator.pushNamed(context, ProfileInfoRoute),
+              onPressed: () => user == null
+                  ? Navigator.pushNamed(context, '/login')
+                  : Navigator.pushNamed(context, ProfileInfoRoute),
               child: Text('Info'))
+          // DropdownButton(items: null, onChanged: null)
         ],
       ),
     ));
