@@ -80,19 +80,30 @@ class Teacher {
 
 class Teach {
   final String id;
+  final String courseId;
   final String name;
-  // final List<String> level;
-  final String category;
 
-  Teach({this.id, this.name, this.category});
+  final String description;
+  final String category;
+  final int hourlyRate;
+
+  Teach(
+      {this.id,
+      this.courseId,
+      this.name,
+      this.description,
+      this.category,
+      this.hourlyRate});
 
   factory Teach.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
 
     return Teach(
         id: doc.documentID,
+        courseId: data['courseId'] ?? '',
         name: data['name'] ?? '',
-        // level: data['level'] ?? [],
-        category: data['category'] ?? '');
+        description: data['description'] ?? '',
+        category: data['category'] ?? '',
+        hourlyRate: data['hourlyRate'] ?? null);
   }
 }

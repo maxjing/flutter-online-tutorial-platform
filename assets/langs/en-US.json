@@ -12,11 +12,47 @@
     "firstName": "First Name",
     "middleName": "Middle Name",
     "lastName": "Last Name",
-    "age": "Age"
+    "age": "Age",
+    "gender": {
+      "label": "Gender",
+      "hint": "Select Gender",
+      "male": "Male",
+      "female": "Female",
+      "other": "Other"
+    },
+    "occupation": {
+      "label": "Occupation",
+      "student": "Student",
+      "working": "Working",
+      "freelancer": "Freelancer"
+    },
+    "organization": {
+      "label": "Organization",
+      "hint1": "Organization Name",
+      "hint2": "Major (if applicable)"
+    },
+    "areas": {
+      "label": "Areas",
+      "hint": "Locations that you area able to teach"
+    },
+    "teachOnline": "Able to teach online?",
+    "highlight": {
+      "label": "Highlight",
+      "hint": "Your short description"
+    },
+    "introduction": {
+      "label": "Introduction",
+      "hint": " Your description"
+    },
+
+    "certificates": "Certificates",
+    "schedule": "Schedule",
+    "subjects": "Subjects"
   },
   "button": {
     "reset": "Reset",
     "switch_language": "Switch Language",
-    "save": "Save"
+    "save": "Save",
+    "submit": "Submit"
   }
 }

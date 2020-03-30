@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'dart:developer';
 import '../../style.dart';
 import '../../db.dart';
 import '../../helper.dart';
@@ -18,31 +20,35 @@ class _TeacherDetailState extends State<TeacherDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: StreamProvider<Teacher>.value(
-            value: db.streamTeacher(widget._teacherID),
-            child: Scaffold(
-                appBar: AppBar(
-                  elevation: 0,
-                  backgroundColor: ThemeColor,
-                  leading: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                  actions: [
-                    Transform.rotate(
-                      angle: -45 * 3.14 / 180,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ),
-                        onPressed: null,
-                      ),
+    return MultiProvider(
+        providers: [
+          StreamProvider<Teacher>.value(
+              value: db.streamTeacher(widget._teacherID)),
+          StreamProvider<List<Teach>>.value(
+              value: db.streamTeachesByUserId(widget._teacherID)),
+        ],
+        child: Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: ThemeColor,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              actions: [
+                Transform.rotate(
+                  angle: -45 * 3.14 / 180,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.send,
+                      color: Colors.white,
                     ),
-                  ],
+                    onPressed: null,
+                  ),
                 ),
-                body: TeacherDetailConten())));
+              ],
+            ),
+            body: TeacherDetailConten()));
   }
 }
 
@@ -78,13 +84,13 @@ class TeacherDetailConten extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             Text(
-              "Simon Fraser University",
+              teacher.organization,
               style: TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
             ),
-            Text("Business Major",
+            Text(teacher.major ?? "",
                 style: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w500,
@@ -110,7 +116,7 @@ class TeacherDetailConten extends StatelessWidget {
         ),
       );
 
-  Widget courses() => Container(
+  Widget courses(List<Teach> teaches) => Container(
       padding: const EdgeInsets.all(20.0),
       child: Container(
           padding: const EdgeInsets.all(15.0),
@@ -124,132 +130,98 @@ class TeacherDetailConten extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Subjects',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              Text(tr('info.subjects'), style: BodyBoldNormalText),
               SizedBox(height: 10.0),
               Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(children: [
-                        AreaBanner('academic', 'Math'),
-                        SizedBox(width: 5.0),
-                        Text('k8-k12', style: BodyBoldGreyText)
-                      ]),
-                      Text('\$125/hour',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500))
-                    ],
-                  ),
-                  SizedBox(height: 10.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(children: [
-                        AreaBanner('mindset', 'Yoga'),
-                        SizedBox(width: 5.0),
-                        Text('beginner', style: BodyBoldGreyText)
-                      ]),
-                      Text('\$133/hour', style: BodyBoldText)
-                    ],
-                  ),
-                  SizedBox(height: 10.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(children: [
-                        AreaBanner('arts', 'Painting'),
-                        SizedBox(width: 5.0),
-                        Text('intermediate-expert', style: BodyBoldGreyText)
-                      ]),
-                      Text('\$125/hour', style: BodyBoldText)
-                    ],
-                  )
-                ],
-              )
+                  children: teaches.map((course) {
+                return Container(
+                    child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: <Widget>[
+                            AreaBanner(course.category, course.name),
+                            SizedBox(width: 5.0),
+                            Text(course.description, style: BodyBoldGreyText),
+                          ],
+                        ),
+                        Text('\$' + course.hourlyRate.toString() + '/hour',
+                            style: BodyBoldNormalText)
+                      ],
+                    ),
+                    SizedBox(height: 10.0),
+                  ],
+                ));
+              }).toList())
             ],
           )));
 
-  Widget location() => Container(
+  Widget location(List<dynamic> areas, bool teachOnline) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Locations',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+            Text(tr('info.areas.label'), style: BodyBoldText),
             SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.0,
-                        color: ThemeColor,
-                      ),
-                      borderRadius:
-                          new BorderRadius.all(new Radius.circular(8.0))),
-                  child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text('Burnaby', style: BodyBoldText)),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.0,
-                        color: ThemeColor,
-                      ),
-                      borderRadius:
-                          new BorderRadius.all(new Radius.circular(8.0))),
-                  child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text('Richmond', style: BodyBoldText)),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.0,
-                        color: ThemeColor,
-                      ),
-                      borderRadius:
-                          new BorderRadius.all(new Radius.circular(8.0))),
-                  child: Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text('Vancouver', style: BodyBoldText)),
-                ),
-              ],
-            ),
+            GridView.count(
+                shrinkWrap: true,
+                childAspectRatio: 2,
+                crossAxisSpacing: 20,
+                crossAxisCount: 3,
+                children: areas.map((area) {
+                  return Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1.0,
+                          color: ThemeColor,
+                        ),
+                        borderRadius:
+                            new BorderRadius.all(new Radius.circular(8.0))),
+                    child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(area, style: BodyBoldNormalText)),
+                  );
+                }).toList()),
             SizedBox(height: 10.0),
-            Container(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Text('Able to teach online', style: BodyBoldGreyText)),
-            SizedBox(height: 20.0),
+            if (teachOnline) ...[
+              Container(
+                  child: Text(tr('info.teachOnline'), style: BodyBoldGreyText)),
+              SizedBox(height: 20.0),
+            ],
             Divider(color: Colors.grey),
           ],
         ),
       );
 
-  Widget introduction() => Container(
+  Widget introduction(String introduction) => Container(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Introduction', style: BodyBoldText),
+          Text(tr('info.introduction.label'), style: BodyBoldText),
           SizedBox(height: 10.0),
-          Text(
-              'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy.).',
+          Text(introduction,
               style: TextStyle(fontSize: 14.0, color: Colors.grey)),
           SizedBox(height: 20.0),
           Divider(color: Colors.grey),
         ],
       ));
 
-  Widget certificate() => Container(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('Certificate', style: BodyBoldText),
-        Placeholder(fallbackHeight: 200.0),
+  Widget certificates(List<dynamic> certificates) => Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(tr('info.certificates'), style: BodyBoldText),
+        SizedBox(height: 10.0),
+        if (certificates != []) ...[
+          for (var c in certificates)
+            Card(
+              child: ListTile(
+                title: Text(c.toString()),
+              ),
+            ),
+        ],
         SizedBox(height: 20.0),
         Divider(color: Colors.grey),
       ]));
@@ -264,7 +236,7 @@ class TeacherDetailConten extends StatelessWidget {
   Widget schedual() => Container(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('Schedual', style: BodyBoldText),
+        Text(tr('info.schedule'), style: BodyBoldText),
         Placeholder(fallbackHeight: 200.0),
         SizedBox(height: 20.0),
         Divider(color: Colors.grey),
@@ -272,6 +244,8 @@ class TeacherDetailConten extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var teacher = Provider.of<Teacher>(context);
+    var teaches = Provider.of<List<Teach>>(context);
+    log(teaches[0].category);
     return teacher == null
         ? LinearProgressIndicator()
         : Container(
@@ -279,10 +253,10 @@ class TeacherDetailConten extends StatelessWidget {
             children: <Widget>[
               teacherIcon(teacher.icon),
               basicInfo(teacher),
-              courses(),
-              location(),
-              introduction(),
-              certificate(),
+              courses(teaches),
+              location(teacher.areas, teacher.teachOnline),
+              introduction(teacher.introduction),
+              certificates(teacher.certificates),
               review(),
               schedual(),
             ],

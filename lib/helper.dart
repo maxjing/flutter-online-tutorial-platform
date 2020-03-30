@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'dart:developer';
 import 'style.dart';
 import 'routes.dart';
 
@@ -32,7 +33,7 @@ ui.Color getAreaColor(String area) {
         return Area_AthleticColor;
       }
       break;
-    case "arts":
+    case "fine_arts":
       {
         return Area_ArtsColor;
       }
@@ -84,4 +85,30 @@ String getRouteByIndex(int index) {
       }
       break;
   }
+}
+
+Map<String, dynamic> genders = {
+  "female": {"en_US": "Female", "zh_CN": "女", "zh_HK": "女"},
+  "male": {"en_US": "Male", "zh_CN": "男", "zh_HK": "男"},
+  "other": {"en_US": "Other", "zh_CN": "其他", "zh_HK": "其他"}
+};
+
+Map<String, dynamic> occupations = {
+  "student": {"en_US": "Student", "zh_CN": "学生", "zh_HK": "學生"},
+  "Working": {"en_US": "working", "zh_CN": "上班", "zh_HK": "上班"},
+  "Freelancer": {"en_US": "freelancer", "zh_CN": "自由职业", "zh_HK": "自由職業"}
+};
+
+String getLocaleText(String languageTag, String value, String type) {
+  Map map;
+  switch (type) {
+    case 'gender':
+      map = genders;
+      break;
+    case 'occupation':
+      map = occupations;
+      break;
+  }
+
+  return map[value][languageTag];
 }

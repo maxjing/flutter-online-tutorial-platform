@@ -19,6 +19,7 @@ import 'screens/signup/studentSignup.dart';
 import 'screens/profile/info.dart';
 import 'screens/courses/courses.dart';
 import 'screens/profile/language.dart';
+import 'screens/profile/subject.dart';
 
 void main() => runApp(EasyLocalization(
     child: App(),
@@ -111,6 +112,9 @@ class App extends StatelessWidget {
           break;
         case LanguageRoute:
           screen = Language();
+          break;
+        case ProfileSubjectRoute:
+          screen = Subject();
           break;
 
         default:

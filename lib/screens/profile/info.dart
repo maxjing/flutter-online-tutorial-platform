@@ -1,14 +1,17 @@
+import 'package:airtnl/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import '../../helper.dart';
 import '../../style.dart';
 import '../../db.dart';
 import '../../models/teacher.dart';
+import '../../components/area_banner.dart';
 
 class Info extends StatelessWidget {
   final Widget header = Container(
@@ -37,13 +40,6 @@ class Info extends StatelessWidget {
                     fontSize: 14,
                     fontWeight: FontWeight.w500),
               ),
-              // Text(
-              //   'FILL IN THE FORM BELOW',
-              //   style: TextStyle(
-              //       color: Colors.white,
-              //       fontSize: 14,
-              //       fontWeight: FontWeight.w500),
-              // ),
             ],
           )));
 
@@ -60,9 +56,14 @@ class Info extends StatelessWidget {
           child: Column(
         children: <Widget>[
           header,
-          StreamProvider<Teacher>.value(
-              value: db.streamTeacher(user.uid),
-              child: InformationForm(user.uid)),
+          MultiProvider(
+            providers: [
+              StreamProvider<Teacher>.value(value: db.streamTeacher(user.uid)),
+              StreamProvider<List<Teach>>.value(
+                  value: db.streamTeachesByUserId(user.uid)),
+            ],
+            child: InformationForm(user.uid),
+          ),
         ],
       )),
     );
@@ -86,6 +87,9 @@ class _InformationFormState extends State<InformationForm> {
   int _cLen = 0;
 
   var _newCertificates = List<Widget>();
+  // String _getGenderText(List<String> genders, String gender) {
+  //   switch()
+  // }
   void _addCertificate() {
     setState(() => ++_cLen);
     if (_cLen > 1) {
@@ -121,6 +125,7 @@ class _InformationFormState extends State<InformationForm> {
     final db = DatabaseService();
 
     var teacher = Provider.of<Teacher>(context);
+    var teaches = Provider.of<List<Teach>>(context);
     bool hasInfo = teacher != null;
 
     //certificates is not empty
@@ -253,9 +258,12 @@ class _InformationFormState extends State<InformationForm> {
                   SizedBox(height: 10.0),
                   FormBuilderDropdown(
                     attribute: "gender",
-                    initialValue: 'Male',
+                    initialValue: getLocaleText(
+                        EasyLocalization.of(context).locale.toString(),
+                        teacher.gender.toLowerCase(),
+                        "gender"),
                     decoration: InputDecoration(
-                      labelText: "Gender",
+                      labelText: tr('info.gender.label'),
                       labelStyle: TextStyle(color: Colors.grey),
                     ),
                     onChanged: _onChanged,
@@ -264,7 +272,11 @@ class _InformationFormState extends State<InformationForm> {
                       style: TextStyle(color: Colors.blueGrey),
                     ),
                     validators: [FormBuilderValidators.required()],
-                    items: ['Male', 'Female', 'Other']
+                    items: [
+                      tr('info.gender.male'),
+                      tr('info.gender.female'),
+                      tr('info.gender.other')
+                    ]
                         .map((gender) => DropdownMenuItem(
                               value: gender,
                               child: Text('$gender'),
@@ -275,24 +287,26 @@ class _InformationFormState extends State<InformationForm> {
                   Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Occupation',
+                        tr('info.occupation.label'),
                         style: BodyBoldText,
                       )),
                   FormBuilderDropdown(
                     attribute: "occupation",
-                    initialValue: 'Working',
-                    decoration: InputDecoration(
-                      labelText: "Occupation",
-                      labelStyle: TextStyle(color: Colors.grey),
-                    ),
-                    // initialValue: 'Male',
+                    initialValue: getLocaleText(
+                        EasyLocalization.of(context).locale.toString(),
+                        teacher.occupation.toLowerCase(),
+                        "occupation"),
                     onChanged: _onChanged,
                     hint: Text(
                       'Select Occupation',
                       style: TextStyle(color: Colors.blueGrey),
                     ),
                     validators: [FormBuilderValidators.required()],
-                    items: ['Freelancer', 'Working', 'Student']
+                    items: [
+                      tr('info.occupation.freelancer'),
+                      tr('info.occupation.working'),
+                      tr('info.occupation.student'),
+                    ]
                         .map((occupation) => DropdownMenuItem(
                               value: occupation,
                               child: Text('$occupation'),
@@ -303,14 +317,14 @@ class _InformationFormState extends State<InformationForm> {
                   Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Organization',
+                        tr('info.organization.label'),
                         style: BodyBoldText,
                       )),
                   SizedBox(height: 10.0),
                   FormBuilderTextField(
                     attribute: "organization",
                     decoration: InputDecoration(
-                      labelText: "Organization Name",
+                      labelText: tr('info.organization.hint1'),
                       labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
@@ -325,7 +339,7 @@ class _InformationFormState extends State<InformationForm> {
                   FormBuilderTextField(
                     attribute: "major",
                     decoration: InputDecoration(
-                      labelText: "Major (if applicable)",
+                      labelText: tr('info.organization.hint2'),
                       labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
@@ -333,17 +347,79 @@ class _InformationFormState extends State<InformationForm> {
                     onChanged: _onChanged,
                     keyboardType: TextInputType.text,
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        tr('info.subjects'),
+                        style: BodyBoldText,
+                      ),
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        padding: EdgeInsets.all(8.0),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, ProfileSubjectRoute),
+                        child: Icon(
+                          Icons.add,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Column(
+                      children: teaches.map((course) {
+                    return Card(
+                        child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child:
+                                      AreaBanner(course.category, course.name),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5.0),
+                                  child: Text(course.description,
+                                      style: BodyBoldGreyText),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                    '\$' +
+                                        course.hourlyRate.toString() +
+                                        '/hour',
+                                    style: BodyBoldNormalText),
+                                IconButton(
+                                    icon: Icon(Icons.more_vert),
+                                    onPressed: null)
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ));
+                  }).toList()),
+                  SizedBox(height: 20),
                   Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Areas',
+                        tr('info.areas.label'),
                         style: BodyBoldText,
                       )),
                   SizedBox(height: 10.0),
                   FormBuilderCheckboxList(
                     decoration: InputDecoration(
-                      labelText: "Locations that you are able to teach",
+                      labelText: tr('info.areas.hint'),
                       labelStyle: TextStyle(color: Colors.grey),
                     ),
                     attribute: "areas",
@@ -365,7 +441,7 @@ class _InformationFormState extends State<InformationForm> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Able to teach online? ',
+                            text: tr('info.teachOnline'),
                             style: TextStyle(color: Colors.black),
                           ),
                         ],
@@ -376,7 +452,7 @@ class _InformationFormState extends State<InformationForm> {
                   Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Highlight',
+                        tr('info.highlight.label'),
                         style: BodyBoldText,
                       )),
                   SizedBox(height: 10.0),
@@ -384,7 +460,7 @@ class _InformationFormState extends State<InformationForm> {
                     attribute: "highlight",
                     maxLines: 1,
                     decoration: InputDecoration(
-                      labelText: "Enter your short description here",
+                      labelText: tr('info.highlight.hint'),
                       labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
@@ -399,7 +475,7 @@ class _InformationFormState extends State<InformationForm> {
                   Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Introduction',
+                        tr('info.introduction.label'),
                         style: BodyBoldText,
                       )),
                   SizedBox(height: 10.0),
@@ -407,7 +483,7 @@ class _InformationFormState extends State<InformationForm> {
                     attribute: "introduction",
                     maxLines: 5,
                     decoration: InputDecoration(
-                      labelText: "Enter your introduction here",
+                      labelText: tr('info.introduction.hint'),
                       labelStyle: TextStyle(color: Colors.grey),
                       filled: true,
                       fillColor: TextFieldBGColor,
@@ -418,17 +494,12 @@ class _InformationFormState extends State<InformationForm> {
                     ],
                     keyboardType: TextInputType.text,
                   ),
-                  // SizedBox(height: 10),
-                  // FlatButton(
-                  //   child: Text('Add another'),
-                  //   onPressed: _addCertificate,
-                  // ),
                   SizedBox(height: 20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        'Certificates',
+                        tr('info.certificates'),
                         style: BodyBoldText,
                       ),
                       MaterialButton(
@@ -445,40 +516,60 @@ class _InformationFormState extends State<InformationForm> {
                     ],
                   ),
                   SizedBox(height: 10.0),
-                  // Column(
-                  //   children: <Widget>[
-                  //     if (_fbKey
-                  //         .currentState.value['certificates'].isEmpty) ...[
-                  //       SizedBox(height: 100),
-                  //     ],
-                  //   ],
-                  // ),
                   if (_certificates != []) ...[
                     for (var c in teacher.certificates)
                       Card(
-                        child: ListTile(
-                          title: Text(c.toString()),
-                          trailing: IconButton(
-                              icon: Icon(
-                                Icons.delete,
-                              ),
-                              onPressed: () => {
-                                    _certificates.remove(c),
-                                    Firestore.instance
-                                        .collection('teachers')
-                                        .document(teacher.id)
-                                        .updateData(
-                                            {'certificates': _certificates})
-                                  }),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Text(c.toString()),
+                            ),
+                            IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () => {
+                                      _certificates.remove(c),
+                                      db.updateCertificates(
+                                          teacher.id, _certificates)
+                                      // Firestore.instance
+                                      //     .collection('teachers')
+                                      //     .document(teacher.id)
+                                      //     .updateData(
+                                      //         {'certificates': _certificates})
+                                    }),
+                          ],
                         ),
                       ),
                   ],
-
                   Column(
                     children: _newCertificates,
                   ),
-
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        tr('info.schedule'),
+                        style: BodyBoldText,
+                      ),
+                      MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        color: Colors.white,
+                        textColor: Colors.black,
+                        padding: EdgeInsets.all(8.0),
+                        onPressed: _addCertificate,
+                        child: Icon(
+                          Icons.add,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
                   Container(
                       child: Center(
                     child: MaterialButton(
@@ -488,14 +579,12 @@ class _InformationFormState extends State<InformationForm> {
                       textColor: Colors.black,
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        "Submit",
+                        tr('button.submit'),
                         style: TextStyle(fontSize: 13.0),
                       ),
                       onPressed: () {
                         _fbKey.currentState.save();
                         if (_fbKey.currentState.validate()) {
-                          // log(_fbKey.currentState.value['certificates']
-                          //     .toString());
                           db.createTeacher(
                               widget.uid, _fbKey.currentState.value);
 

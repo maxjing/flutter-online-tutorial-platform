@@ -12,11 +12,46 @@
     "firstName": "名",
     "middleName": "中间名",
     "lastName": "姓",
-    "age": "年龄"
+    "age": "年龄",
+    "gender": {
+      "label": "性别",
+      "male": "男",
+      "female": "女",
+      "other": "其他"
+    },
+    "occupation": {
+      "label": "职业",
+      "student": "学生",
+      "working": "上班",
+      "freelancer": "自由职业"
+    },
+    "organization": {
+      "label": "工作地点",
+      "hint1": "工作地点名称",
+      "hint2": "专业 (如果符合请填写)"
+    },
+    "areas": {
+      "label": "区域",
+      "hint": "您能够教学的区域"
+    },
+    "teachOnline": "可以上网课吗？",
+    "highlight": {
+      "label": "亮点",
+      "hint": "短介绍"
+    },
+    "introduction": {
+      "label": "介绍",
+      "hint": "我的介绍"
+    },
+
+    "certificates": "证书",
+    "schedule": "时间表",
+    "subjects": "科目"
   },
   "button": {
     "reset": "重置",
     "switch_language": "切换语言",
-    "save": "保存"
+    "save": "保存",
+    "submit": "提交"
   }
 }

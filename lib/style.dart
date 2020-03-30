@@ -49,6 +49,13 @@ const BodyBoldText = TextStyle(
   color: Colors.black,
 );
 
+const BodyBoldNormalText = TextStyle(
+  fontFamily: FontNameDefault,
+  fontWeight: FontWeight.w500,
+  fontSize: 14,
+  color: Colors.black,
+);
+
 const BodyBoldGreyText = TextStyle(
   fontFamily: FontNameDefault,
   fontWeight: FontWeight.w500,

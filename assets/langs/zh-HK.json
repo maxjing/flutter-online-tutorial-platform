@@ -12,11 +12,45 @@
     "firstName": "名",
     "middleName": "中間名",
     "lastName": "姓",
-    "age": "年齡"
+    "age": "年齡",
+    "gender": {
+      "label": "性別",
+      "male": "男",
+      "female": "女",
+      "other": "其他"
+    },
+    "occupation": {
+      "label": "職業",
+      "student": "學生",
+      "working": "上班",
+      "freelancer": "自由職業"
+    },
+    "organization": {
+      "label": "工作地點",
+      "hint1": "工作地點名稱",
+      "hint2": "專業 (如果符合請填寫)"
+    },
+    "areas": {
+      "label": "區域",
+      "hint": "您能夠教學的區域"
+    },
+    "teachOnline": "可以上網課嗎？",
+    "highlight": {
+      "label": "亮點",
+      "hint": "短介紹"
+    },
+    "introduction": {
+      "label": "介紹",
+      "hint": "我的介紹"
+    },
+    "certificates": "證書",
+    "schedule": "時間表",
+    "subjects": "科目"
   },
   "button": {
     "reset": "重置",
     "switch_language": "切換語言",
-    "save": "保存"
+    "save": "保存",
+    "submit": "提交"
   }
 }

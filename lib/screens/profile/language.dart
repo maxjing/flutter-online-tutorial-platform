@@ -52,47 +52,45 @@ class _LanguageState extends State<Language> {
                 ))
           ],
         ),
-        body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0),
-            child: Column(children: [
-              InkWell(
-                child: ListTile(
-                  title: Text("English"),
-                  trailing: _selected == 0
-                      ? Icon(
-                          Icons.done,
-                          color: Colors.green,
-                        )
-                      : null,
-                ),
-                onTap: () => setState(() => _selected = 0),
-              ),
-              Container(color: Colors.black12, height: 1),
-              InkWell(
-                child: ListTile(
-                  title: Text(" 简体中文"),
-                  trailing: _selected == 1
-                      ? Icon(
-                          Icons.done,
-                          color: Colors.green,
-                        )
-                      : null,
-                ),
-                onTap: () => setState(() => _selected = 1),
-              ),
-              Container(color: Colors.black12, height: 1),
-              InkWell(
-                child: ListTile(
-                  title: Text(" 繁體中文"),
-                  trailing: _selected == 2
-                      ? Icon(
-                          Icons.done,
-                          color: Colors.green,
-                        )
-                      : null,
-                ),
-                onTap: () => setState(() => _selected = 2),
-              ),
-            ])));
+        body: Column(children: [
+          InkWell(
+            child: ListTile(
+              title: Text("English"),
+              trailing: _selected == 0
+                  ? Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    )
+                  : null,
+            ),
+            onTap: () => setState(() => _selected = 0),
+          ),
+          Container(color: Colors.black12, height: 1),
+          InkWell(
+            child: ListTile(
+              title: Text(" 简体中文"),
+              trailing: _selected == 1
+                  ? Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    )
+                  : null,
+            ),
+            onTap: () => setState(() => _selected = 1),
+          ),
+          Container(color: Colors.black12, height: 1),
+          InkWell(
+            child: ListTile(
+              title: Text(" 繁體中文"),
+              trailing: _selected == 2
+                  ? Icon(
+                      Icons.done,
+                      color: Colors.green,
+                    )
+                  : null,
+            ),
+            onTap: () => setState(() => _selected = 2),
+          ),
+        ]));
   }
 }

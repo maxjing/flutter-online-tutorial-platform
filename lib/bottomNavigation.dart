@@ -62,17 +62,7 @@ class _BottomNavigationBarControllerState
 
   @override
   Widget build(BuildContext context) {
-    log(EasyLocalization.of(context).locale.toString(), name: this.toString());
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("title").tr(args: ['jj']),
-      //   leading: IconButton(
-      //     icon: Icon(Icons.arrow_back, color: Colors.white),
-      //     onPressed: () {
-      //       switchLanguage(Locale("zh", "CN"));
-      //     },
-      //   ),
-      // ),
       bottomNavigationBar: _bottomNavigationBar(_selectedIndex),
       body: PageStorage(
         child: pages[_selectedIndex],

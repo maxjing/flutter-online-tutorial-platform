@@ -28,7 +28,7 @@ class _CoursesState extends State<Courses> {
           children: <Widget>[
             Container(
                 constraints: BoxConstraints.expand(
-                  height: getScreenHeight() * 0.15,
+                  height: getScreenHeight() * 0.2,
                 ),
                 decoration:
                     BoxDecoration(color: getAreaColor(widget._categoryId)),
@@ -41,7 +41,9 @@ class _CoursesState extends State<Courses> {
                         Row(
                           children: <Widget>[
                             Text(
-                              widget._categoryId.toUpperCase(),
+                              widget._categoryId
+                                  .replaceAll("_", " ")
+                                  .toUpperCase(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 24,
