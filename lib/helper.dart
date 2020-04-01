@@ -95,8 +95,8 @@ Map<String, dynamic> genders = {
 
 Map<String, dynamic> occupations = {
   "student": {"en_US": "Student", "zh_CN": "学生", "zh_HK": "學生"},
-  "Working": {"en_US": "working", "zh_CN": "上班", "zh_HK": "上班"},
-  "Freelancer": {"en_US": "freelancer", "zh_CN": "自由职业", "zh_HK": "自由職業"}
+  "working": {"en_US": "Working", "zh_CN": "上班", "zh_HK": "上班"},
+  "freelancer": {"en_US": "Freelancer", "zh_CN": "自由职业", "zh_HK": "自由職業"}
 };
 
 String getLocaleText(String languageTag, String value, String type) {

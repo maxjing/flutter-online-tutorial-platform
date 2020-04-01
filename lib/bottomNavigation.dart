@@ -56,10 +56,6 @@ class _BottomNavigationBarControllerState
         ],
       );
 
-  switchLanguage(Locale locale) {
-    EasyLocalization.of(context).locale = locale;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

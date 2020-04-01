@@ -15,12 +15,14 @@
     "age": "年龄",
     "gender": {
       "label": "性别",
+      "hint": "请选择性别",
       "male": "男",
       "female": "女",
       "other": "其他"
     },
     "occupation": {
       "label": "职业",
+      "hint": "请选择职业",
       "student": "学生",
       "working": "上班",
       "freelancer": "自由职业"
@@ -34,7 +36,7 @@
       "label": "区域",
       "hint": "您能够教学的区域"
     },
-    "teachOnline": "可以上网课吗？",
+    "teachOnline": "可以上网课吗",
     "highlight": {
       "label": "亮点",
       "hint": "短介绍"

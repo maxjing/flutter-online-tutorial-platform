@@ -165,25 +165,24 @@ class TeacherDetailConten extends StatelessWidget {
           children: <Widget>[
             Text(tr('info.areas.label'), style: BodyBoldText),
             SizedBox(height: 10.0),
-            GridView.count(
-                shrinkWrap: true,
-                childAspectRatio: 2,
-                crossAxisSpacing: 20,
-                crossAxisCount: 3,
-                children: areas.map((area) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1.0,
-                          color: ThemeColor,
-                        ),
-                        borderRadius:
-                            new BorderRadius.all(new Radius.circular(8.0))),
-                    child: Container(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(area, style: BodyBoldNormalText)),
-                  );
-                }).toList()),
+            Wrap(
+              spacing: 10.0,
+              runSpacing: 10.0,
+              children: areas.map((area) {
+                return Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1.0,
+                        color: ThemeColor,
+                      ),
+                      borderRadius:
+                          new BorderRadius.all(new Radius.circular(8.0))),
+                  child: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(area, style: BodyBoldNormalText)),
+                );
+              }).toList(),
+            ),
             SizedBox(height: 10.0),
             if (teachOnline) ...[
               Container(
@@ -214,13 +213,19 @@ class TeacherDetailConten extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(tr('info.certificates'), style: BodyBoldText),
         SizedBox(height: 10.0),
-        if (certificates != []) ...[
-          for (var c in certificates)
-            Card(
-              child: ListTile(
-                title: Text(c.toString()),
-              ),
-            ),
+        if (certificates.isNotEmpty) ...[
+          Wrap(
+            spacing: 10.0,
+            runSpacing: 10.0,
+            children: certificates.map((c) {
+              return Card(
+                  child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        c.toString(),
+                      )));
+            }).toList(),
+          ),
         ],
         SizedBox(height: 20.0),
         Divider(color: Colors.grey),

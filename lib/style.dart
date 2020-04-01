@@ -23,6 +23,8 @@ const Area_ArtsColor = const Color(0xfff08580);
 const Area_SkillsColor = const Color(0xffffd037);
 const Area_OthersColor = const Color(0xff82e87d);
 
+const WarningTextColor = Color.fromRGBO(217, 83, 79, 1);
+
 //signup page
 const TeacherSignupButtonColor = const Color(0xff7d75ff);
 //login page
@@ -69,3 +71,8 @@ const Body1TextStyle = TextStyle(
   fontSize: BodyTextSize,
   color: Colors.black,
 );
+const TitleTextStyle = TextStyle(
+    fontFamily: FontNameDefault,
+    color: Colors.white,
+    fontSize: 24,
+    fontWeight: FontWeight.bold);

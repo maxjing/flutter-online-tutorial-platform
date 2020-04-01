@@ -6,12 +6,17 @@
     "profile": "Profile"
   },
   "info": {
-    "title": "Basic Information",
-    "subtitle": "TO START TEACHING FILL IN THE FORM BELOW",
+    "title": "Personal",
+    "backgroundTitle": "Background",
+    "tutorialTitle": "Tutorial",
     "about_me": "About Me",
+    "backgroundSubtitle": "My Experience",
+    "tutorialSubtitle": "",
     "firstName": "First Name",
     "middleName": "Middle Name",
     "lastName": "Last Name",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
     "age": "Age",
     "gender": {
       "label": "Gender",
@@ -20,8 +25,13 @@
       "female": "Female",
       "other": "Other"
     },
+    "subject": {
+      "category": "Category",
+      "name": "Name"
+    },
     "occupation": {
       "label": "Occupation",
+      "hint": "Select Occupation",
       "student": "Student",
       "working": "Working",
       "freelancer": "Freelancer"
@@ -35,7 +45,7 @@
       "label": "Areas",
       "hint": "Locations that you area able to teach"
     },
-    "teachOnline": "Able to teach online?",
+    "teachOnline": "Able to teach online",
     "highlight": {
       "label": "Highlight",
       "hint": "Your short description"
@@ -53,6 +63,9 @@
     "reset": "Reset",
     "switch_language": "Switch Language",
     "save": "Save",
-    "submit": "Submit"
+    "submit": "Submit",
+    "personal": "Personal",
+    "background": "Background",
+    "tutorial": "Tutorial"
   }
 }

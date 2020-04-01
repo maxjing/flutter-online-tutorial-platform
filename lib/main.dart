@@ -114,7 +114,7 @@ class App extends StatelessWidget {
           screen = Language();
           break;
         case ProfileSubjectRoute:
-          screen = Subject();
+          screen = Subject(arguments['uid'], arguments['subject']);
           break;
 
         default:
