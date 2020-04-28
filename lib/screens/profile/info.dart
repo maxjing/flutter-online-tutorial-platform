@@ -26,11 +26,15 @@ class _InfoState extends State<Info> {
     var user = Provider.of<FirebaseUser>(context);
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          tr('info.title'),
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: TeacherLoginButtonColor,
         elevation: 0.0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pushNamed(context, ProfileRoute),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: SingleChildScrollView(
@@ -38,7 +42,7 @@ class _InfoState extends State<Info> {
         children: <Widget>[
           Container(
               constraints: BoxConstraints.expand(
-                height: getScreenHeight() * 0.15,
+                height: getScreenHeight() * 0.10,
               ),
               decoration: BoxDecoration(color: TeacherLoginButtonColor),
               child: Container(
@@ -47,25 +51,6 @@ class _InfoState extends State<Info> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      if (_selected == 0) ...[
-                        Text(
-                          tr('info.title'),
-                          style: TitleTextStyle,
-                        ),
-                      ],
-                      if (_selected == 1) ...[
-                        Text(
-                          tr('info.backgroundTitle'),
-                          style: TitleTextStyle,
-                        ),
-                      ],
-                      if (_selected == 2) ...[
-                        Text(
-                          tr('info.tutorialTitle'),
-                          style: TitleTextStyle,
-                        ),
-                      ],
-                      SizedBox(height: 10.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[

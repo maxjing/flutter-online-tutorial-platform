@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../helper.dart';
 import '../../style.dart';
 import 'recommendBanner.dart';
 import 'homepageTeacherList.dart';
 import 'categoryList.dart';
+import '../../components/searchbar.dart';
 
 class Home extends StatelessWidget {
   Home({Key key}) : super(key: key);
@@ -57,27 +59,8 @@ class Home extends StatelessWidget {
       ));
 
   final Widget searchBar = Container(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: TextField(
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: SearchBarColor,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-          borderSide: BorderSide(
-            width: 0,
-            style: BorderStyle.none,
-          ),
-        ),
-        hintText: "what area are you looking for",
-        prefixIcon: const Icon(
-          Icons.search,
-        ),
-        labelStyle: TextStyle(color: Colors.black),
-        // ),
-      ),
-    ),
-  );
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Searchbar(tr('searchbar.hint1')));
 
   final Widget header = Container(
     padding: const EdgeInsets.all(20),

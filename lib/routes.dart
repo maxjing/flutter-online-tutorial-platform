@@ -13,3 +13,5 @@ const ProfileInfoRoute = '/profile/info';
 const CoursesRoute = '/courses';
 const LanguageRoute = '/profile/language';
 const ProfileSubjectRoute = '/profile/subject';
+const ProfileScheduleRoute = '/profile/schedule';
+const CourseTeacherListRoute = '/course/teachers';

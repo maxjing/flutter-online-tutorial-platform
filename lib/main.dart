@@ -20,6 +20,8 @@ import 'screens/profile/info.dart';
 import 'screens/courses/courses.dart';
 import 'screens/profile/language.dart';
 import 'screens/profile/subject.dart';
+import 'screens/profile/schedule.dart';
+import 'screens/teacher/courseTeacherList.dart';
 
 void main() => runApp(EasyLocalization(
     child: App(),
@@ -114,7 +116,14 @@ class App extends StatelessWidget {
           screen = Language();
           break;
         case ProfileSubjectRoute:
-          screen = Subject(arguments['uid'], arguments['subject']);
+          screen = ProfileSubject(arguments['uid'], arguments['subject']);
+          break;
+        case ProfileScheduleRoute:
+          screen = ProfileSchedule();
+          break;
+        case CourseTeacherListRoute:
+          screen =
+              CourseTeacherList(arguments['category'], arguments['courseId']);
           break;
 
         default:

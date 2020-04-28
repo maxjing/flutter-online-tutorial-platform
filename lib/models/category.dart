@@ -20,13 +20,27 @@ class Category {
 }
 
 class Course {
+  final String id;
   final String name;
   final String img;
 
-  Course({this.name, this.img});
+  Course({this.id, this.name, this.img});
 
   factory Course.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
-    return Course(name: data['name'] ?? '', img: data['img'] ?? '');
+    return Course(
+        id: doc.documentID, name: data['name'] ?? '', img: data['img'] ?? '');
+  }
+}
+
+class Teachers {
+  final String id;
+  final String teacherId;
+
+  Teachers({this.id, this.teacherId});
+
+  factory Teachers.fromFirestore(DocumentSnapshot doc) {
+    Map data = doc.data;
+    return Teachers(id: data['id'] ?? '', teacherId: data['teacherId'] ?? '');
   }
 }

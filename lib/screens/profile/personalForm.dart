@@ -62,18 +62,17 @@ class _PersonalFormState extends State<PersonalForm> {
                               tr('info.about_me'),
                               style: BodyBoldText,
                             ),
-                            MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              color: Colors.white,
-                              textColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              onPressed: () => {_fbKey.currentState.reset()},
-                              child: Text(
-                                tr('button.reset'),
-                                style: TextStyle(fontSize: 13.0),
-                              ),
-                            ),
+                            FlatButton(
+                                onPressed: () => {_fbKey.currentState.reset()},
+                                child: Row(children: [
+                                  Text(
+                                    tr('button.reset'),
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                  Icon(
+                                    Icons.refresh,
+                                  ),
+                                ])),
                           ],
                         ),
                         SizedBox(height: 10.0),

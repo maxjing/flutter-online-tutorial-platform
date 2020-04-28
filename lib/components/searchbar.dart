@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import '../style.dart';
 
-class Searchbar extends StatelessWidget {
+class Searchbar extends StatefulWidget {
+  final String hintText;
+  Searchbar(this.hintText);
+  @override
+  _SearchbarState createState() => _SearchbarState();
+}
+
+class _SearchbarState extends State<Searchbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +24,8 @@ class Searchbar extends StatelessWidget {
               style: BorderStyle.none,
             ),
           ),
-          hintText: "what area are you looking for",
+          hintText: widget.hintText,
+          hintStyle: TextStyle(color: Colors.black26),
           prefixIcon: const Icon(
             Icons.search,
           ),

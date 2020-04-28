@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'dart:async';
 import './models/teacher.dart';
 import './models/category.dart';
+// import './models/teaches.dart';
+import 'dart:developer';
 
 class DatabaseService {
   final Firestore _db = Firestore.instance;
@@ -25,6 +28,20 @@ class DatabaseService {
         .document(id)
         .snapshots()
         .map((snap) => Teacher.fromFirestore(snap));
+  }
+
+  List<Stream<Teacher>> streamTeachersByIds(List<String> ids) {
+    List<Stream<Teacher>> teachers;
+
+    teachers.add(streamTeacher('pDBLYyP1v6S60EpRo6dOkivIUtx1'));
+    return teachers;
+
+    // return _db
+    //     .collection('teachers')
+    //     .where(, whereIn: ['jj', 'wjwjw'])
+    //     .snapshots()
+    //     .map((list) =>
+    //         list.documents.map((doc) => Teacher.fromFirestore(doc)).toList());
   }
 
 /* teacher subcollection teaches */
@@ -192,6 +209,20 @@ class DatabaseService {
 
     return ref.snapshots().map((list) =>
         list.documents.map((doc) => Course.fromFirestore(doc)).toList());
+  }
+
+/* category course teachers  */
+  Stream<List<Teachers>> streamTeachersByCourse(
+      String category, String course) {
+    var ref = _db
+        .collection('categories')
+        .document(category)
+        .collection('courses')
+        .document(course)
+        .collection('teachers');
+
+    return ref.snapshots().map((list) =>
+        list.documents.map((doc) => Teachers.fromFirestore(doc)).toList());
   }
 
   // Future<void> createHero(FirebaseUser user) {

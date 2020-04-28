@@ -250,7 +250,6 @@ class TeacherDetailConten extends StatelessWidget {
   Widget build(BuildContext context) {
     var teacher = Provider.of<Teacher>(context);
     var teaches = Provider.of<List<Teach>>(context);
-    log(teaches[0].category);
     return teacher == null
         ? LinearProgressIndicator()
         : Container(

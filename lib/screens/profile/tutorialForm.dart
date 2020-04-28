@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'dart:developer';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../style.dart';
@@ -31,11 +33,12 @@ class _TutorialFormState extends State<TutorialForm> {
     var teacher = Provider.of<Teacher>(context);
     var teaches = Provider.of<List<Teach>>(context);
 
-    if (teaches != []) {
+    if (teaches != null && teaches != []) {
       setState(() {
         _subjects = new List.from(teaches, growable: true);
       });
     }
+
     return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -56,6 +59,7 @@ class _TutorialFormState extends State<TutorialForm> {
                       'teachOnline': teacher.teachOnline,
                       'highlight': teacher.highlight,
                       'introduction': teacher.introduction,
+                      'date': DateTime.now(),
                     },
                     readOnly: false,
                     child: Column(
@@ -69,18 +73,17 @@ class _TutorialFormState extends State<TutorialForm> {
                               tr('info.highlight.label'),
                               style: BodyBoldText,
                             ),
-                            MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              color: Colors.white,
-                              textColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              onPressed: () => {_fbKey.currentState.reset()},
-                              child: Text(
-                                tr('button.reset'),
-                                style: TextStyle(fontSize: 13.0),
-                              ),
-                            ),
+                            FlatButton(
+                                onPressed: () => {_fbKey.currentState.reset()},
+                                child: Row(children: [
+                                  Text(
+                                    tr('button.reset'),
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                  Icon(
+                                    Icons.refresh,
+                                  ),
+                                ])),
                           ],
                         ),
                         SizedBox(height: 10.0),
@@ -193,9 +196,9 @@ class _TutorialFormState extends State<TutorialForm> {
                           ],
                         ),
                         SizedBox(height: 10),
-                        if (teaches != []) ...[
+                        if (_subjects != []) ...[
                           Column(
-                              children: teaches.map((course) {
+                              children: _subjects.map((course) {
                             return Card(
                                 child: Column(
                               children: <Widget>[
@@ -263,7 +266,8 @@ class _TutorialFormState extends State<TutorialForm> {
                               color: Colors.white,
                               textColor: Colors.black,
                               padding: EdgeInsets.all(8.0),
-                              onPressed: () => {},
+                              onPressed: () => Navigator.pushNamed(
+                                  context, ProfileScheduleRoute),
                               child: Icon(
                                 Icons.add,
                               ),

@@ -5,8 +5,11 @@
     "timetable": "Timetable",
     "profile": "Profile"
   },
+
   "info": {
-    "title": "Personal",
+    "preview": "Preview",
+    "title": "Edit Profile",
+    "personalTitle": "Personal",
     "backgroundTitle": "Background",
     "tutorialTitle": "Tutorial",
     "about_me": "About Me",
@@ -25,10 +28,7 @@
       "female": "Female",
       "other": "Other"
     },
-    "subject": {
-      "category": "Category",
-      "name": "Name"
-    },
+
     "occupation": {
       "label": "Occupation",
       "hint": "Select Occupation",
@@ -58,6 +58,19 @@
     "certificates": "Certificates",
     "schedule": "Schedule",
     "subjects": "Subjects"
+  },
+  "schedule": {
+    "title": "My Schedule"
+  },
+  "subject": {
+    "category": "Category",
+    "name": "Course Name",
+    "description": "Description",
+    "hourlyRate": "Hourly Rate"
+  },
+  "searchbar": {
+    "hint1": "what area are you looking for",
+    "hint2": "what subject are you looking for"
   },
   "button": {
     "reset": "Reset",

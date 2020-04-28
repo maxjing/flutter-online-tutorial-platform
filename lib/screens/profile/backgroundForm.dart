@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+
 import '../../style.dart';
 import '../../db.dart';
 import '../../models/teacher.dart';
@@ -63,7 +64,6 @@ class _BackgroundFormState extends State<BackgroundForm> {
     final db = DatabaseService();
 
     var teacher = Provider.of<Teacher>(context);
-    log(teacher.registered.toString());
     //certificates is not empty
     if (teacher != null && teacher.certificates != []) {
       setState(() {
@@ -105,18 +105,17 @@ class _BackgroundFormState extends State<BackgroundForm> {
                               tr('info.backgroundSubtitle'),
                               style: BodyBoldText,
                             ),
-                            MaterialButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              color: Colors.white,
-                              textColor: Colors.black,
-                              padding: EdgeInsets.all(8.0),
-                              onPressed: () => {_fbKey.currentState.reset()},
-                              child: Text(
-                                tr('button.reset'),
-                                style: TextStyle(fontSize: 13.0),
-                              ),
-                            ),
+                            FlatButton(
+                                onPressed: () => {_fbKey.currentState.reset()},
+                                child: Row(children: [
+                                  Text(
+                                    tr('button.reset'),
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                  Icon(
+                                    Icons.refresh,
+                                  ),
+                                ])),
                           ],
                         ),
                         SizedBox(height: 10.0),

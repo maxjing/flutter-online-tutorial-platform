@@ -5,17 +5,17 @@ import '../../style.dart';
 import '../../db.dart';
 import '../../models/teacher.dart';
 
-class Subject extends StatefulWidget {
+class ProfileSubject extends StatefulWidget {
   final String _uid;
   final Teach _subject;
 
-  Subject(this._uid, this._subject);
+  ProfileSubject(this._uid, this._subject);
 
   @override
-  _SubjectState createState() => _SubjectState();
+  _ProfileSubjectState createState() => _ProfileSubjectState();
 }
 
-class _SubjectState extends State<Subject> {
+class _ProfileSubjectState extends State<ProfileSubject> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final GlobalKey<ScaffoldState> _scaffoldstate =
       new GlobalKey<ScaffoldState>();
@@ -116,7 +116,7 @@ class _SubjectState extends State<Subject> {
                     FormBuilderValidators.required(),
                     FormBuilderValidators.numeric(),
                     FormBuilderValidators.max(999),
-                    FormBuilderValidators.min(50)
+                    FormBuilderValidators.min(20)
                   ],
                   keyboardType: TextInputType.number,
                 ),
