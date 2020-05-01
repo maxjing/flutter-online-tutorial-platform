@@ -180,6 +180,7 @@ class DatabaseService {
         .add({
       'category': map['category'],
       'name': map['name'],
+      'specify': map['specify'],
       'description': map['description'],
       'hourlyRate': int.parse(map['hourlyRate'])
     });

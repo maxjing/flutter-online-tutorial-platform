@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import '../../style.dart';
 import '../../db.dart';
 import '../../models/teacher.dart';
+import 'dart:developer';
 
 class ProfileSubject extends StatefulWidget {
   final String _uid;
@@ -23,6 +24,7 @@ class _ProfileSubjectState extends State<ProfileSubject> {
   final db = DatabaseService();
   @override
   Widget build(BuildContext context) {
+    // log(_fbKey.currentState.fields['name'].currentState.value);
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: false,
@@ -42,6 +44,7 @@ class _ProfileSubjectState extends State<ProfileSubject> {
               initialValue: {
                 'category': widget._subject.category,
                 'name': widget._subject.name,
+                'specify': widget._subject.specify,
                 'description': widget._subject.description,
                 'hourlyRate': widget._subject.hourlyRate == 0
                     ? ''
@@ -70,9 +73,8 @@ class _ProfileSubjectState extends State<ProfileSubject> {
                           .toList(),
                 ),
                 SizedBox(height: 10),
-                FormBuilderTextField(
+                FormBuilderDropdown(
                   attribute: "name",
-                  readOnly: false,
                   decoration: InputDecoration(
                     labelText: tr('subject.name'),
                     labelStyle: TextStyle(color: Colors.grey),
@@ -83,7 +85,27 @@ class _ProfileSubjectState extends State<ProfileSubject> {
                   validators: [
                     FormBuilderValidators.required(),
                   ],
-                  keyboardType: TextInputType.text,
+                  items:
+                      ['', 'Math', 'Academic', 'Fine Arts', 'Skills', 'Other']
+                          .map((name) => DropdownMenuItem(
+                                value: name,
+                                child: Text('$name'),
+                              ))
+                          .toList(),
+                ),
+                FormBuilderTextField(
+                  attribute: "specify",
+                  decoration:
+                      InputDecoration(labelText: "If Other, please specify"),
+                  validators: [
+                    (val) {
+                      if (_fbKey.currentState.fields['name'].currentState
+                                  .value ==
+                              "Other" &&
+                          (val == null || val.isEmpty))
+                        return "Please specify the course name";
+                    },
+                  ],
                 ),
                 SizedBox(height: 10),
                 FormBuilderTextField(

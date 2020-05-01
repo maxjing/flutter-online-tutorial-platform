@@ -125,12 +125,18 @@ class Teacher {
 class Teach {
   final String id;
   final String name;
-
+  final String specify;
   final String description;
   final String category;
   final int hourlyRate;
 
-  Teach({this.id, this.name, this.description, this.category, this.hourlyRate});
+  Teach(
+      {this.id,
+      this.name,
+      this.specify,
+      this.description,
+      this.category,
+      this.hourlyRate});
 
   factory Teach.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data;
@@ -138,6 +144,7 @@ class Teach {
     return Teach(
         id: doc.documentID,
         name: data['name'] ?? '',
+        specify: data['specify'] ?? '',
         description: data['description'] ?? '',
         category: data['category'] ?? '',
         hourlyRate: data['hourlyRate'] ?? null);
@@ -145,6 +152,11 @@ class Teach {
 
   factory Teach.initializer() {
     return Teach(
-        id: '', name: '', description: '', category: 'Academic', hourlyRate: 0);
+        id: '',
+        name: '',
+        specify: '',
+        description: '',
+        category: 'Academic',
+        hourlyRate: 0);
   }
 }
