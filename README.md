@@ -2,7 +2,7 @@
 
 ![image](https://raw.githubusercontent.com/maxjing/flutter-online-tutorial-platform/master/images/icon.png)
 
-Online Tutorial Platform is an flutter Application which can be ran on ios and andriod devices. The platform allow student and teachers to build or join online courses. This app aims to encourage people to study while stay home during covid-19 special scenario.
+Online Tutorial Platform is a flutter Application that can be run on ios and Andriod devices. The platform allows students and teachers to build or join online courses. This app aims to encourage people to study while staying home during the COVID-19 special scenario.
 
 ### Tech
 
